@@ -4,6 +4,7 @@ services:
 
   db:
     image: postgres
+    container_name: db
     restart: always
     env_file:
       - .env
@@ -12,6 +13,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
+    container_name: backend
     restart: always
     volumes:
       - ./backend:/usr/src/app
@@ -26,8 +28,11 @@ services:
     build:
         context: frontend
         dockerfile: Dockerfile
+    container_name: frontend
     restart: always
     volumes:
      - ./frontend:/usr/src/app
     ports:
      - 3000:3000
+    env_file:
+      - .env
