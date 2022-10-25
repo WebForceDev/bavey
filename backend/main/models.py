@@ -19,3 +19,11 @@ class User(AbstractUser):
         null=True,
         blank=True
     )
+
+class Publication(models.Model):
+    title = models.CharField(max_length=200)
+    up_voice = models.PositiveSmallIntegerField(default=0)
+    down_voice = models.PositiveSmallIntegerField(default=0)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField()
+    
