@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     description = models.TextField(
         'Description in profile header',
-        max_length=30,
         null=True,
         blank=True
     )
@@ -19,6 +18,8 @@ class User(AbstractUser):
         null=True,
         blank=True
     )
+    slug = models.SlugField()
+
 
 class Publication(models.Model):
     title = models.CharField(max_length=200)
