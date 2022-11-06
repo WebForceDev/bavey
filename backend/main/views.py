@@ -1,5 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework.generics import ListAPIView
 
-def index(request):
-    return HttpResponse('test')
+from .models import Publication
+from .serializers import PublicationSerializer
+
+
+class UserPublicationList(ListAPIView):
+    serializer_class = PublicationSerializer
+    model = Publication
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        queryset = self.model.objects.filter(owner=user_id)
+        return queryset
