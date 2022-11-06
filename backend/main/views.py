@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-from .models import Publication
-from .serializers import PublicationSerializer
+from .models import Publication, User
+from .serializers import PublicationSerializer, UserSerializer
 
 
 class UserPublicationList(ListAPIView):
@@ -11,3 +11,8 @@ class UserPublicationList(ListAPIView):
         user_id = self.kwargs['user_id']
         queryset = self.model.objects.filter(owner=user_id)
         return queryset
+
+
+class UserRetrieve(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
