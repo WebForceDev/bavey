@@ -20,6 +20,7 @@ class UserRetrieve(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class Profile(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
