@@ -25,3 +25,8 @@ class Profile(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, IsUserProfile)
+
+
+class PublicationRetrieve(RetrieveAPIView):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
