@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import User, Publication
+from . import models
 
 
-admin.site.register(User)
-admin.site.register(Publication)
+admin.site.register(models.User)
+admin.site.register(models.Publication)
+admin.site.register(models.Voice)

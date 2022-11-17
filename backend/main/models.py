@@ -23,17 +23,14 @@ class User(AbstractUser):
 
 class Publication(models.Model):
     title = models.CharField(max_length=200)
-    up_voice = models.PositiveSmallIntegerField(default=0)
-    down_voice = models.PositiveSmallIntegerField(default=0)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField()
 
+class MediaTypeChoices(models.TextChoices):
+    IMAGE = 'image'
+    FILE = 'file'
 
 class PublicationMedia(models.Model):
-    class MediaTypeChoices(models.TextChoices):
-        IMAGE = 'image'
-        FILE = 'file'
-
     type = models.CharField(
         max_length=10,
         choices=MediaTypeChoices.choices)
@@ -48,3 +45,15 @@ class PublicationMedia(models.Model):
         blank=True
     )
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+
+class VoiceTypeChoices(models.TextChoices):
+    DOWN = 'down'
+    UP = 'up'
+    BOOKMARK = 'bookmark'
+
+class Voice(models.Model):
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.CharField(
+        max_length=10,
+        choices=VoiceTypeChoices.choices)
