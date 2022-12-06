@@ -5,7 +5,7 @@ export const UserMiniTitleStyled = styled.div`
     display: flex;
     align-items: center;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
 `;
 
 export const UserInfo = styled.div`
@@ -14,5 +14,5 @@ export const UserInfo = styled.div`
 
 export const UserName = styled.div`
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
 `;

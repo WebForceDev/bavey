@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
 
-const FlexStyled = styled.div`
+interface IFlexStyledProps {
+    justifyContent: string,
+    alignItems: string
+}
+
+const FlexStyled = styled.div<IFlexStyledProps>`
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: ${props => props.justifyContent};
+    align-items: ${props => props.alignItems};
 `;
 
 export default FlexStyled;
