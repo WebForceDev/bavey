@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Header from '../components/Header/Header';
 import Publication from '../components/Publication/Publication'
 import WrapperStyled from '../styles/components/Wrapper';
+import UserTitle from '../components/UserTitle/UsetTitle';
 
 
 const Home: NextPage = () => {
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
       <main>
         <WrapperStyled>
           <Publication />
+          <UserTitle />
         </WrapperStyled>
       </main>
         
