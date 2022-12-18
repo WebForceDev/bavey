@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const PublicationStyle = styled.div`
     background: ${props => props.theme.color.grey};
-    max-width: 660px;
     border-radius: 16px;
     padding: 25px 0px 25px 0px;
 `;

@@ -5,6 +5,8 @@ import Header from '../components/Header/Header';
 import Publication from '../components/Publication/Publication'
 import WrapperStyled from '../styles/components/Wrapper';
 import UserTitle from '../components/UserTitle/UsetTitle';
+import Board from '../components/Board/Board';
+import UserMiniTitle from '../components/UserMiniTitle/UserMiniTitle';
 
 
 const Home: NextPage = () => {
@@ -22,6 +24,11 @@ const Home: NextPage = () => {
         <WrapperStyled>
           <Publication />
           <UserTitle />
+          <Board>
+            <UserMiniTitle />
+            <UserMiniTitle />
+            <UserMiniTitle />
+          </Board>
         </WrapperStyled>
       </main>
         
