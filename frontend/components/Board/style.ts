@@ -9,5 +9,5 @@ export const BoardStyled = styled.div`
 
 export const BoardTitleStyled = styled.div`
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px;
 `;

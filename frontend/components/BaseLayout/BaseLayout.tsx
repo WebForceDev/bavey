@@ -1,7 +1,6 @@
 import React from "react"
 
 import Header from "../Header/Header"
-import WrapperStyled from "../../styles/components/Wrapper"
 
 
 interface IBaseLayoutProps {
@@ -13,9 +12,7 @@ const BaseLayout: React.FC<IBaseLayoutProps> = (props) => {
     <>
       <Header />
       <main>
-        <WrapperStyled>
           {props.children}
-        </WrapperStyled>
       </main>
     </>
   )

@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import {UserTitleStyled} from './style';
 import Button from '../../styles/components/Button';
+
+
 import AvatarImage from "../../public/Avatar.png";
 
 
