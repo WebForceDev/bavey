@@ -20,9 +20,3 @@ export const PublicationText = styled.p`
     margin: auto;
     margin-top: 8px;
 `;
-
-export const TextAfterIcon = styled.div`
-    font-size: 18px;
-    font-weight: 400;
-    margin-left: 8px;
-`;
