@@ -6,6 +6,7 @@ import FlexStyled from "../../styles/components/Flex";
 import { PublicationStyle, PublicationWrapper, PublicationText } from "./styled";
 import PublicationFeedback from "../PublicationFeedback/PublicationFeedback";
 import Margin from "../../styles/components/Margin";
+import { IPublication, IUser } from "../../types/user";
 
 import upVoiceIcon from '../../public/upVoiceIcon.svg';
 import downVoiceIcon from '../../public/downVoiceIcon.svg';
@@ -13,14 +14,19 @@ import commentIcon from '../../public/commentIcon.svg';
 import bookmarkIcon from '../../public/bookmarkIcon.svg';
 
 
-const Publication: React.FC = () => {
+interface IPublicationProps {
+  user: IUser,
+  publication: IPublication
+}
+
+const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
   return (
     <PublicationStyle>
         <PublicationWrapper>
-            <UserMiniTitle />
+            <UserMiniTitle user={ user } />
         </PublicationWrapper>
         <PublicationText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis sodales elit, in dignissim turpis. Donec rutrum vehicula leo eget ullamcorper. Aliquam in dui porta, fringilla diam sed, suscipit elit. Quisque pulvinar risus purus, vel tincidunt enim lobortis et. Suspendisse non bibendum libero. Duis mattis neque nec dui pretium, a eleifend ipsum egestas. Aenean sed metus sed mi sollicitudin tempor. Maecenas porttitor tempus lorem, eget luctus turpis ultricies commodo. Curabitur sit amet justo nibh. Curabitur leo turpis, sodales nec nibh in, blandit iaculis odio. Nullam eros tortor, vehicula vel lorem a, dictum lacinia eros. Vestibulum consequat, orci ac bibendum vehicula, massa orci imperdiet risus, eget laoreet est turpis quis ipsum. Vestibulum scelerisque nisi justo, a sodales turpis molestie non. Vestibulum pellentesque arcu sem, vel convallis arcu hendrerit non. In laoreet fringilla ipsum condimentum ultrices. Fusce facilisis porttitor libero.
+          { publication.title }
         </PublicationText>
         <PublicationWrapper>
           <Margin mg="10px 0 0 0">

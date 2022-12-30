@@ -8,9 +8,14 @@ import WrapperStyled from "../../styles/components/Wrapper"
 import ContentGrid from "../../styles/components/ContentGrid";
 import FlexStyled from "../../styles/components/Flex";
 import Margin from "../../styles/components/Margin";
+import { IUser } from "../../types/user";
 
 
-const ProfileHeader: React.FC = () => {
+interface IProfileHeaderProps {
+    user: IUser
+}
+
+const ProfileHeader: React.FC<IProfileHeaderProps> = ({ user }) => {
     return (
         <ProfileHeaderStyled>
             <ProfileHeaderBackground />
@@ -22,11 +27,11 @@ const ProfileHeader: React.FC = () => {
                     <FlexStyled justifyContent="space-between" alignItems="flex-start">
                         <div>
                             <UserName>
-                                SergeyAverin
+                                { user.username }
                             </UserName>
-                            <Link href="#">@sergeyaverin</Link>
+                            <Link href={ user.slug }>{ user.slug }</Link>
                             <Margin mg="25px 0 0 0">
-                                Описапние
+                                { user.description }
                             </Margin>
                         </div>
                         <Margin mg="25px 0 0 0">

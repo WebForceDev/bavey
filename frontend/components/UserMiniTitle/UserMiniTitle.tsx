@@ -3,9 +3,14 @@ import Image from "next/image";
 
 import { UserMiniTitleStyled, UserName, UserInfo} from "./style";
 import AvatarImage from "../../public/Avatar.png"
+import { IUser } from "../../types/user";
 
 
-const UserMiniTitle: React.FC = () => {
+interface IUserMiniTitleProps {
+  user: IUser
+}
+
+const UserMiniTitle: React.FC<IUserMiniTitleProps> = ({ user }) => {
   return (
     <UserMiniTitleStyled>
       <Image
@@ -15,8 +20,8 @@ const UserMiniTitle: React.FC = () => {
         height={50}
       />
       <UserInfo>
-        <UserName>Sergey Averin</UserName>
-        <a href="#">@sergeyaverin</a>
+        <UserName>{ user.username }</UserName>
+        <a href={user.slug}>{user.slug}</a>
       </UserInfo>
     </UserMiniTitleStyled>
   )
