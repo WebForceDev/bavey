@@ -10,6 +10,8 @@ class PublicationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    publications = PublicationSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -20,4 +22,5 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'first_name',
             'last_name',
+            'publications'
         ]

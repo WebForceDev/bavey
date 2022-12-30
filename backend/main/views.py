@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,23 +11,18 @@ from .serializers import PublicationSerializer, UserSerializer
 from .permission import IsUserProfile
 
 
-# List user's publications
-class UserPublicationList(ListAPIView):
-    serializer_class = PublicationSerializer
-    model = Publication
-
-    def get_queryset(self):
-        user_slug = self.kwargs['slug']
-        user = get_object_or_404(User, slug=user_slug)
-        queryset = self.model.objects.filter(owner=user)
-        return queryset
-
-
-# Retrieve user's informations
+# Retrieve user's informations and user's publications
 class UserRetrieve(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'slug'
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        user = get_object_or_404(queryset, slug=self.kwargs['slug'])
+        publications = Publication.objects.filter(owner=user)
+        user.publications = publications
+        return user
 
 
 # User profile
