@@ -33,10 +33,10 @@ const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
             <FlexStyled justifyContent="space-between" alignItems="center">
               <FlexStyled justifyContent="flex-start" alignItems="center">
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback icon={upVoiceIcon} feedbackCount={21} />
+                    <PublicationFeedback icon={upVoiceIcon} feedbackCount={ publication.up_voice.length } />
                 </Margin>
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback icon={downVoiceIcon} feedbackCount={21} />
+                    <PublicationFeedback icon={downVoiceIcon} feedbackCount={ publication.down_voice.length } />
                 </Margin>
                 <Margin mg="0 15px 0 0">
                     <PublicationFeedback icon={commentIcon} feedbackCount={21} />

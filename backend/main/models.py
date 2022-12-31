@@ -23,12 +23,16 @@ class User(AbstractUser):
 
 class Publication(models.Model):
     title = models.CharField(max_length=200)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     slug = models.SlugField()
+    # The wall is where the post is displayed2
+    wall = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wall')
+
 
 class MediaTypeChoices(models.TextChoices):
     IMAGE = 'image'
     FILE = 'file'
+
 
 class PublicationMedia(models.Model):
     type = models.CharField(
@@ -46,10 +50,12 @@ class PublicationMedia(models.Model):
     )
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
 
+
 class VoiceTypeChoices(models.TextChoices):
     DOWN = 'down'
     UP = 'up'
     BOOKMARK = 'bookmark'
+
 
 class Voice(models.Model):
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)

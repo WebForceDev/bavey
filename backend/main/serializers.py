@@ -1,12 +1,28 @@
 from rest_framework import serializers
 
-from main.models import Publication, User
+from main.models import Publication, User, Voice
 
+
+class VoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Voice
+        fields = [
+            'user',
+        ]
 
 class PublicationSerializer(serializers.ModelSerializer):
+    up_voice = VoiceSerializer(many=True, read_only=True)
+    down_voice = VoiceSerializer(many=True, read_only=True)
+
     class Meta:
         model = Publication
-        fields = '__all__'
+        fields = [
+            'title',
+            'slug',
+            'wall',
+            'up_voice',
+            'down_voice'
+        ]
 
 
 class UserSerializer(serializers.ModelSerializer):

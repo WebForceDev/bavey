@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
-from .models import Publication, User, VoiceTypeChoices
+from .models import Publication, User, VoiceTypeChoices, Voice
 from .mixins import SetVoiceMixin
 from .serializers import PublicationSerializer, UserSerializer
 from .permission import IsUserProfile
@@ -20,7 +20,16 @@ class UserRetrieve(RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()
         user = get_object_or_404(queryset, slug=self.kwargs['slug'])
-        publications = Publication.objects.filter(owner=user)
+        publications = Publication.objects.filter(wall=user)
+
+        for publication in publications:
+            publication.up_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.UP,
+                publication=publication)
+            publication.down_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.DOWN,
+                publication=publication)
+
         user.publications = publications
         return user
 
@@ -36,6 +45,7 @@ class Profile(RetrieveUpdateDestroyAPIView):
 class PublicationRetrieve(RetrieveAPIView):
     queryset = Publication.objects.all()
     serializer_class = PublicationSerializer
+    lookup_field = 'slug'
 
 
 # Put voice on publications

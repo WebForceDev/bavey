@@ -1,6 +1,8 @@
 export interface IPublication {
     title: string,
-    slug: string
+    slug: string,
+    up_voice: [{ user:number }],
+    down_voice: [{ user:number }]
 }
 
 export interface IUser {
