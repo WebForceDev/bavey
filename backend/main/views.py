@@ -47,13 +47,26 @@ class PublicationRetrieve(RetrieveAPIView):
     serializer_class = PublicationSerializer
     lookup_field = 'slug'
 
+    def get_object(self):
+        queryset = self.get_queryset()
+        publication = get_object_or_404(queryset, slug=self.kwargs['slug'])
+
+        publication.up_voice = Voice.objects.filter(
+            type=VoiceTypeChoices.UP,
+            publication=publication)
+        publication.down_voice = Voice.objects.filter(
+            type=VoiceTypeChoices.DOWN,
+            publication=publication)
+
+        return publication
+
 
 # Put voice on publications
 class PublicationSetVoice(APIView, SetVoiceMixin):
     permission_classes = (IsAuthenticated,)
     voice_type = VoiceTypeChoices.UP
 
-    def get(self, request, publication_pk):
-        self.set_voice(request, publication_pk)
-        up_voice_count = self.get_voice_count(publication_pk)
+    def get(self, request, slug):
+        self.set_voice(request, slug)
+        up_voice_count = self.get_voice_count(slug)
         return Response({f'{self.voice_type}_voice_count': up_voice_count}, status.HTTP_200_OK)

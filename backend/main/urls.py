@@ -9,12 +9,12 @@ urlpatterns = [
     path('profile/<slug:slug>', views.Profile.as_view()),
     path('publication/<slug:slug>', views.PublicationRetrieve.as_view()),
     path(
-        'publication/<int:publication_pk>/setupvoice',
+        'publication/<slug:slug>/setupvoice',
         views.PublicationSetVoice.as_view(voice_type=VoiceTypeChoices.UP)),
     path(
-        'publication/<int:publication_pk>/setdownvoice',
+        'publication/<slug:slug>/setdownvoice',
         views.PublicationSetVoice.as_view(voice_type=VoiceTypeChoices.DOWN)),
     path(
-        'publication/<int:publication_pk>/setbookmarkvoice',
+        'publication/<slug:slug>/setbookmarkvoice',
         views.PublicationSetVoice.as_view(voice_type=VoiceTypeChoices.BOOKMARK)),
 ]

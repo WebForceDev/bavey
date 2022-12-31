@@ -4,13 +4,12 @@ from .models import Publication, User, Voice
 
 
 class SetVoiceMixin:
-    def set_voice(self, request, pk):
-        publication = get_object_or_404(Publication, pk=pk)
+    def set_voice(self, request, slug):
+        publication = get_object_or_404(Publication, slug=slug)
         user = User.objects.get(pk=request.user.pk)
         voice = Voice.objects.filter(
             user=user,
-            publication=publication,
-            type=self.voice_type
+            publication=publication
         )
         if voice:
             voice.first().delete()
@@ -21,8 +20,8 @@ class SetVoiceMixin:
                 type=self.voice_type
             )
 
-    def get_voice_count(self, pk):
-        publication = get_object_or_404(Publication, pk=pk)
+    def get_voice_count(self, slug):
+        publication = get_object_or_404(Publication, slug=slug)
         return Voice.objects.filter(
             publication=publication,
             type=self.voice_type
