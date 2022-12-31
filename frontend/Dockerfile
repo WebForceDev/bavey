@@ -1,14 +1,9 @@
-FROM node
+FROM node:19
 
-ENV PORT 3000
-
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+COPY ./ ./
 
-COPY package*.json /usr/src/app/
-RUN npm install
-
-COPY . /usr/src/app
+RUN npm i
 
 # RUN npm run build
 EXPOSE 3000
