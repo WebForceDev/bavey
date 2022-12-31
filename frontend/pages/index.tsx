@@ -1,14 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import Header from '../components/Header/Header';
-import Publication from '../components/Publication/Publication'
-import WrapperStyled from '../styles/components/Wrapper';
-import UserTitle from '../components/UserTitle/UsetTitle';
-import Board from '../components/Board/Board';
-import UserMiniTitle from '../components/UserMiniTitle/UserMiniTitle';
-
-
 const Home: NextPage = () => {
   return (
     <div>
@@ -19,17 +11,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       */}
-      <Header></Header>
+
       <main>
-        <WrapperStyled>
-          <Publication />
-          <UserTitle />
-          <Board>
-            <UserMiniTitle />
-            <UserMiniTitle />
-            <UserMiniTitle />
-          </Board>
-        </WrapperStyled>
+        test
       </main>
         
     </div>
