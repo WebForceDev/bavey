@@ -7,12 +7,12 @@ interface IBaseLayoutProps {
     children: any
 }
 
-const BaseLayout: React.FC<IBaseLayoutProps> = (props) => {
+const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
   return (
     <>
       <Header />
       <main>
-          {props.children}
+          { children }
       </main>
     </>
   )
