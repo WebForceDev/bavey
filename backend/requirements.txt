@@ -4,6 +4,7 @@ autopep8==1.7.0
 backports.zoneinfo==0.2.1
 dill==0.3.6
 Django==4.1
+django-cors-headers==3.13.0
 djangorestframework==3.14.0
 isort==5.10.1
 lazy-object-proxy==1.7.1
