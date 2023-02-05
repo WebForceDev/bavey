@@ -71,5 +71,16 @@ class Profile(APIView):
 
     def get(self, request):
         user = get_object_or_404(User, pk=request.user.pk)
+        publications = Publication.objects.filter(wall=user)
+
+        for publication in publications:
+            publication.up_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.UP,
+                publication=publication)
+            publication.down_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.DOWN,
+                publication=publication)
+
+        user.publications = publications
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status.HTTP_200_OK)
