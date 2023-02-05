@@ -6,12 +6,12 @@ import { InputWrapper, InputStyled, InputLabelStyled } from "./style";
 interface IInputProps {
   attrName: string,
   attrType?: string,
-  labelText: string
+  labelText: string,
+  inputValues: string,
+  setInputValues: Function
 };
 
-const Input: React.FC<IInputProps> = ({attrName, labelText, attrType}) => {
-  const [inputValues, setInputValues] = useState('');
-
+const Input: React.FC<IInputProps> = ({attrName, labelText, attrType, inputValues, setInputValues}) => {
   return (
     <InputWrapper>
       <InputStyled
