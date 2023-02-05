@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -70,4 +70,6 @@ class Profile(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        return Response({'user': request.user.username}, status.HTTP_200_OK)
+        user = get_object_or_404(User, pk=request.user.pk)
+        user_serializer = UserSerializer(user)
+        return Response(user_serializer.data, status.HTTP_200_OK)
