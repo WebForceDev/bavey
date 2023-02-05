@@ -4,7 +4,7 @@ import { IUser } from "../types/user";
 
 
 interface AppContextInterface {
-    token: string | null,
+    token: string|null,
     setToken: Function,
     user: IUser | null
 };
@@ -16,9 +16,18 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
-	const [token, setToken] = useState(null)
+    let tokenString: string|null = '';
+    if (typeof localStorage !== 'undefined') {
+        tokenString = localStorage.getItem('token');
+    }
+	const [token, setToken] = useState(tokenString)
 
-	return <AuthContext.Provider value={{token, setToken, user: null}}>
+    const setTokenContext = (token:string) => {
+        setToken(token);
+        localStorage.setItem('token', token);
+    }
+
+	return <AuthContext.Provider value={{token, setToken: setTokenContext, user: null}}>
 		{ children }
 	</AuthContext.Provider>
 };
