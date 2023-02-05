@@ -34,13 +34,6 @@ class UserRetrieve(RetrieveAPIView):
         return user
 
 
-# User profile
-class Profile(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsUserProfile)
-    lookup_field = 'slug'
-
 # Retrieve publication's informations
 class PublicationRetrieve(RetrieveAPIView):
     queryset = Publication.objects.all()
@@ -70,3 +63,11 @@ class PublicationSetVoice(APIView, SetVoiceMixin):
         self.set_voice(request, slug)
         up_voice_count = self.get_voice_count(slug)
         return Response({f'{self.voice_type}_voice_count': up_voice_count}, status.HTTP_200_OK)
+
+
+# Get user's information
+class Profile(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        return Response({'user': request.user.username}, status.HTTP_200_OK)
