@@ -61,8 +61,8 @@ class PublicationSetVoice(APIView, SetVoiceMixin):
 
     def get(self, request, slug):
         self.set_voice(request, slug)
-        up_voice_count = self.get_voice_count(slug)
-        return Response({f'{self.voice_type}_voice_count': up_voice_count}, status.HTTP_200_OK)
+        voices_count = self.get_voice_count(slug)
+        return Response(voices_count, status.HTTP_200_OK)
 
 
 # Get user's information
