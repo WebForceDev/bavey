@@ -7,12 +7,13 @@ import { TextAfterIcon } from "./styled";
 
 interface PublicationFeedbackProps {
     icon: string,
-    feedbackCount:number
+    feedbackCount:any,
+    onclick:any
 }
 
-const PublicationFeedback: React.FC<PublicationFeedbackProps> = ({icon, feedbackCount}) => {
+const PublicationFeedback: React.FC<PublicationFeedbackProps> = ({icon, feedbackCount,onclick}) => {
     return (
-        <FlexStyled justifyContent="flex-start" alignItems="center">
+        <FlexStyled justifyContent="flex-start" alignItems="center" onClick={onclick}>
             <Image src={ icon } alt="up voice"/>
             <TextAfterIcon>{ feedbackCount }</TextAfterIcon>
         </FlexStyled>

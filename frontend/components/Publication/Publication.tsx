@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import UserMiniTitle from "../UserMiniTitle/UserMiniTitle";
@@ -7,6 +7,7 @@ import { PublicationStyle, PublicationWrapper, PublicationText } from "./styled"
 import PublicationFeedback from "../PublicationFeedback/PublicationFeedback";
 import Margin from "../../styles/components/Margin";
 import { IPublication, IUser } from "../../types/user";
+import { useSetVoiceMutation } from "../../redux/api/postApi";
 
 import upVoiceIcon from '../../public/upVoiceIcon.svg';
 import downVoiceIcon from '../../public/downVoiceIcon.svg';
@@ -20,6 +21,20 @@ interface IPublicationProps {
 }
 
 const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
+  const [setVoice, result] = useSetVoiceMutation();
+  const [upVoices, setUpVoices]= useState(publication.up_voice.length);
+  const [downVoices, setDownVoices] = useState(publication.down_voice.length);
+
+  function setUpvoice(voice:string):React.MouseEventHandler<HTMLDivElement> {
+    return async (event) => {
+      const mutation = setVoice({slug: publication.slug, voiceType: voice})
+      const res:any = await mutation;
+
+      setUpVoices(res.data.up_voice_count);
+      setDownVoices(res.data.down_voice_count);
+    }
+  }
+
   return (
     <PublicationStyle>
         <PublicationWrapper>
@@ -33,13 +48,13 @@ const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
             <FlexStyled justifyContent="space-between" alignItems="center">
               <FlexStyled justifyContent="flex-start" alignItems="center">
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback icon={upVoiceIcon} feedbackCount={ publication.up_voice.length } />
+                    <PublicationFeedback onclick={setUpvoice('up')} icon={upVoiceIcon} feedbackCount={ upVoices } />
                 </Margin>
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback icon={downVoiceIcon} feedbackCount={ publication.down_voice.length } />
+                    <PublicationFeedback onclick={setUpvoice('down')} icon={downVoiceIcon} feedbackCount={ downVoices } />
                 </Margin>
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback icon={commentIcon} feedbackCount={21} />
+                    <PublicationFeedback onclick={setUpvoice('book')} icon={commentIcon} feedbackCount={21} />
                 </Margin>
               </FlexStyled>
               <Image src={bookmarkIcon} alt="bookmark"/>

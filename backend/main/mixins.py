@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from .models import Publication, User, Voice
+from .models import Publication, User, Voice, VoiceTypeChoices
 
 
 class SetVoiceMixin:
@@ -11,18 +11,31 @@ class SetVoiceMixin:
             user=user,
             publication=publication
         )
-        if voice:
-            voice.first().delete()
-        else:
-            Voice.objects.create(
-                user=user,
-                publication=publication,
-                type=self.voice_type
-            )
+
+        if voice.count() > 0:
+            if voice.first().type == self.voice_type:
+                voice.first().delete()
+                return None
+            else:
+                voice.first().delete()
+        Voice.objects.create(
+            user=user,
+            publication=publication,
+            type=self.voice_type
+        )
+
 
     def get_voice_count(self, slug):
         publication = get_object_or_404(Publication, slug=slug)
-        return Voice.objects.filter(
+        up_voice_count = Voice.objects.filter(
             publication=publication,
-            type=self.voice_type
+            type=VoiceTypeChoices.UP
         ).count()
+        down_voice_count = Voice.objects.filter(
+            publication=publication,
+            type=VoiceTypeChoices.DOWN
+        ).count()
+        return {
+            'up_voice_count': up_voice_count,
+            'down_voice_count': down_voice_count,
+        }

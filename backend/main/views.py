@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -34,13 +34,6 @@ class UserRetrieve(RetrieveAPIView):
         return user
 
 
-# User profile
-class Profile(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsUserProfile)
-    lookup_field = 'slug'
-
 # Retrieve publication's informations
 class PublicationRetrieve(RetrieveAPIView):
     queryset = Publication.objects.all()
@@ -68,5 +61,26 @@ class PublicationSetVoice(APIView, SetVoiceMixin):
 
     def get(self, request, slug):
         self.set_voice(request, slug)
-        up_voice_count = self.get_voice_count(slug)
-        return Response({f'{self.voice_type}_voice_count': up_voice_count}, status.HTTP_200_OK)
+        voices_count = self.get_voice_count(slug)
+        return Response(voices_count, status.HTTP_200_OK)
+
+
+# Get user's information
+class Profile(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = get_object_or_404(User, pk=request.user.pk)
+        publications = Publication.objects.filter(wall=user)
+
+        for publication in publications:
+            publication.up_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.UP,
+                publication=publication)
+            publication.down_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.DOWN,
+                publication=publication)
+
+        user.publications = publications
+        user_serializer = UserSerializer(user)
+        return Response(user_serializer.data, status.HTTP_200_OK)
