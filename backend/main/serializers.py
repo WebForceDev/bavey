@@ -25,7 +25,7 @@ class PublicationSerializer(serializers.ModelSerializer):
     up_voice = VoiceSerializer(many=True, read_only=True)
     down_voice = VoiceSerializer(many=True, read_only=True)
     publication_media = PublicationMediaSerializer(many=True, read_only=True)
-
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Publication
@@ -35,7 +35,8 @@ class PublicationSerializer(serializers.ModelSerializer):
             'wall',
             'up_voice',
             'down_voice',
-            'publication_media'
+            'publication_media',
+            'owner'
         ]
 
 

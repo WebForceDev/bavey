@@ -8,6 +8,7 @@ urlpatterns = [
     path('user/<slug:slug>', views.UserRetrieve.as_view()),
     path('profile', views.Profile.as_view()),
     path('publication/<slug:slug>', views.PublicationRetrieve.as_view()),
+    path('createPublication', views.CreatePublication.as_view()),
     path(
         'publication/<slug:slug>/setupvoice',
         views.PublicationSetVoice.as_view(voice_type=VoiceTypeChoices.UP)),

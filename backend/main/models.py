@@ -25,7 +25,7 @@ class Publication(models.Model):
     title = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     slug = models.SlugField()
-    # The wall is where the post is displayed2
+    # The wall is where the post is displayed
     wall = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wall')
 
 

@@ -51,8 +51,19 @@ class PublicationRetrieve(RetrieveAPIView):
         publication.down_voice = Voice.objects.filter(
             type=VoiceTypeChoices.DOWN,
             publication=publication)
+        publication.publication_media = PublicationMedia.objects.filter(publication=publication)  
 
         return publication
+
+
+class CreatePublication(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        serializer = PublicationSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Put voice on publications
