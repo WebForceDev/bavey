@@ -7,6 +7,7 @@ import BaseLayout from '../../components/BaseLayout/BaseLayout';
 import ContentGrid from '../../styles/components/ContentGrid';
 import Margin from '../../styles/components/Margin';
 import WrapperStyled from "../../styles/components/Wrapper"
+import PublicationCreator from '../PublicationCreator/PublicationCreator';
 import { IUser } from '../../types/user';
 
 
@@ -56,6 +57,9 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
               </div>
 
               <div>
+                <Margin mg='0 0 30px 0'>
+                  <PublicationCreator />
+                </Margin>
                   { publications }  
               </div>
 
