@@ -24,7 +24,7 @@ const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
   const [setVoice, result] = useSetVoiceMutation();
   const [upVoices, setUpVoices]= useState(publication.up_voice.length);
   const [downVoices, setDownVoices] = useState(publication.down_voice.length);
-
+  
   function setUpvoice(voice:string):React.MouseEventHandler<HTMLDivElement> {
     return async (event) => {
       const mutation = setVoice({slug: publication.slug, voiceType: voice})
@@ -34,11 +34,10 @@ const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
       setDownVoices(res.data.down_voice_count);
     }
   }
-
   return (
     <PublicationStyle>
         <PublicationWrapper>
-            <UserMiniTitle user={ user } />
+            <UserMiniTitle autor={ publication.autor } />
         </PublicationWrapper>
         <PublicationText>
           { publication.title }

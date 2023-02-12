@@ -1,8 +1,14 @@
+export interface IUserMini {
+    username:string,
+    slug:string
+}
+
 export interface IPublication {
     title: string,
     slug: string,
     up_voice: [{ user:number }],
-    down_voice: [{ user:number }]
+    down_voice: [{ user:number }],
+    autor: IUserMini
 }
 
 export interface IUser {

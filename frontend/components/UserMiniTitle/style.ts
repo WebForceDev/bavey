@@ -10,6 +10,8 @@ export const UserMiniTitleStyled = styled.div`
 
 export const UserInfo = styled.div`
     margin-left: 8px;
+    font-weight: 700;
+    font-size: 24px;
 `;
 
 export const UserName = styled.div`

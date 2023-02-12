@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer
+from .serializers import PublicationSerializer, UserSerializer, PublicationAutorSerializer
 from .permission import IsUserProfile
 
 
@@ -30,6 +30,7 @@ class UserRetrieve(RetrieveAPIView):
                 type=VoiceTypeChoices.DOWN,
                 publication=publication)
             publication.publication_media = PublicationMedia.objects.filter(publication=publication)
+            publication.autor = User.objects.get(pk=publication.owner.pk)
 
         user.publications = publications
         return user
@@ -66,6 +67,10 @@ class CreatePublication(APIView):
             serializer.save()
             return Response({
                     **serializer.data,
+                    "autor": {
+                        "username": request.user.username,
+                        "slug": request.user.slug
+                    },
                     "up_voice": [],
                     "down_voice": []
                 },

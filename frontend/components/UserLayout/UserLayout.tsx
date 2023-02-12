@@ -18,6 +18,7 @@ interface IUserLayoutProps {
 
 const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
   const [publicationList, setPublicationList] = useState(user.publications)
+
   const publications = publicationList.map((publication) => (
       <Margin mg='0 0 30px 0' key={publication.slug}>
         <Publication publication={publication} user={user} />
@@ -34,25 +35,25 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
                 <Margin mg='0 0 15px 0'>
                   <Board>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user} />
+                      <UserMiniTitle autor={user} />
                     </Margin>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
+                      <UserMiniTitle autor={user}  />
                     </Margin>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
+                      <UserMiniTitle autor={user}  />
                     </Margin>
                   </Board>
                 </Margin>
                 <Board>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                 </Board>
               </div>
@@ -67,13 +68,13 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
               <div>
                 <Board>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                 </Board>
               </div>
