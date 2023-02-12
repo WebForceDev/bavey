@@ -59,10 +59,17 @@ class PublicationRetrieve(RetrieveAPIView):
 class CreatePublication(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
+        wall = get_object_or_404(User, slug=request.data['wall'])
+        request.data['wall'] = wall.pk
         serializer = PublicationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({
+                    **serializer.data,
+                    "up_voice": [],
+                    "down_voice": []
+                },
+                status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
