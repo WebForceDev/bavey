@@ -21,7 +21,9 @@ const UserMiniTitle: React.FC<IUserMiniTitleProps> = ({ autor }) => {
         height={50}
       />
       <UserInfo>
-        
+        <Link href={ autor.slug }>
+          { autor.username }
+        </Link>
       </UserInfo>
     </UserMiniTitleStyled>
   )
