@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 
-export const PublicationCreatorStyled = styled.div`
+export const PublicationCreatorStyled = styled.form`
     background: ${(props) => props.theme.color.grey};
     border-radius: 16px;
     padding: 20px 40px;
@@ -22,14 +22,15 @@ export const PublicationInput = styled.input`
     }
 `;
 
-export const PublicationButton = styled.button`
+export const PublicationButton = styled.input.attrs({type: 'submit'})`
     width: 100px;
     background: ${(props) => props.theme.color.grean};
     padding: 8px 18px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
     line-height: 19px;
     outline: none;
     border: none;
     border-radius: 15px;
+    cursor: pointer;
 `

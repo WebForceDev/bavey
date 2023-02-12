@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Publication from '../../components/Publication/Publication';
 import Board from '../../components/Board/Board';
@@ -17,7 +17,8 @@ interface IUserLayoutProps {
 }
 
 const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
-  const publications = user.publications.map((publication) => (
+  const [publicationList, setPublicationList] = useState(user.publications)
+  const publications = publicationList.map((publication) => (
       <Margin mg='0 0 30px 0' key={publication.slug}>
         <Publication publication={publication} user={user} />
       </Margin>
@@ -58,9 +59,9 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
 
               <div>
                 <Margin mg='0 0 30px 0'>
-                  <PublicationCreator />
+                  <PublicationCreator setPublicationList={setPublicationList} wall={user.slug} />
                 </Margin>
-                  { publications }  
+                  { publications.reverse() }  
               </div>
 
               <div>
