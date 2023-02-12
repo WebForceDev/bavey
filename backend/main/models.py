@@ -1,6 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.crypto import get_random_string
 
+
+def slug_save(obj):
+    if not obj.slug:
+        obj.slug = get_random_string(15)
+        slug_is_wrong = True
+        while slug_is_wrong:
+            slug_is_wrong = False
+            other_objs_with_slug = type(obj).objects.filter(slug=obj.slug)
+            if len(other_objs_with_slug) > 0:
+                slug_is_wrong = True
+            if slug_is_wrong:
+                obj.slug = get_random_string(5)
 
 class User(AbstractUser):
     description = models.TextField(
@@ -18,15 +31,23 @@ class User(AbstractUser):
         null=True,
         blank=True
     )
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        slug_save(self)
+        super(User, self).save(*args, **kwargs)
 
 
 class Publication(models.Model):
     title = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, blank=True, null=True)
     # The wall is where the post is displayed
     wall = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wall')
+
+    def save(self, *args, **kwargs):
+        slug_save(self)
+        super(Publication, self).save(*args, **kwargs)
 
 
 class MediaTypeChoices(models.TextChoices):
