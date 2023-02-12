@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
-from .models import Publication, User, VoiceTypeChoices, Voice
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia
 from .mixins import SetVoiceMixin
 from .serializers import PublicationSerializer, UserSerializer
 from .permission import IsUserProfile
@@ -29,6 +29,7 @@ class UserRetrieve(RetrieveAPIView):
             publication.down_voice = Voice.objects.filter(
                 type=VoiceTypeChoices.DOWN,
                 publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
 
         user.publications = publications
         return user
@@ -80,6 +81,7 @@ class Profile(APIView):
             publication.down_voice = Voice.objects.filter(
                 type=VoiceTypeChoices.DOWN,
                 publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
 
         user.publications = publications
         user_serializer = UserSerializer(user)
