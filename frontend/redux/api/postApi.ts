@@ -20,19 +20,35 @@ export const postApi = createApi({
     baseUrl: `${BASE_URL}/api/v1.0/publication/`,
   }),
   endpoints: (builder) => ({
+
     setVoice: builder.mutation<ISetVoiceResult, ISetVoiceArgs>({
-      query(req) {
+        query(req) {
+          return {
+            url: `${req.slug}/set${req.voiceType}voice`,
+            headers: {
+              Authorization: `Token ${ localStorage.getItem('token') }`
+            }
+          };
+        },
+    }),
+
+    createPublication: builder.mutation<any, any>({
+      query(data) {
         return {
-          url: `${req.slug}/set${req.voiceType}voice`,
+          url: '/createPublication',
+          method: 'POST',
+          body: data,
           headers: {
             Authorization: `Token ${ localStorage.getItem('token') }`
           }
         };
       },
-    })
+  })
+
   }),
 });
 
 export const {
-    useSetVoiceMutation
+    useSetVoiceMutation,
+    useCreatePublicationMutation
 } = postApi;
