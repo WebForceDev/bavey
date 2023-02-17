@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
-from .models import Publication, User, VoiceTypeChoices, Voice
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer
+from .serializers import PublicationSerializer, UserSerializer, PublicationAutorSerializer
 from .permission import IsUserProfile
 
 
@@ -29,6 +29,8 @@ class UserRetrieve(RetrieveAPIView):
             publication.down_voice = Voice.objects.filter(
                 type=VoiceTypeChoices.DOWN,
                 publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
+            publication.autor = User.objects.get(pk=publication.owner.pk)
 
         user.publications = publications
         return user
@@ -50,8 +52,30 @@ class PublicationRetrieve(RetrieveAPIView):
         publication.down_voice = Voice.objects.filter(
             type=VoiceTypeChoices.DOWN,
             publication=publication)
+        publication.publication_media = PublicationMedia.objects.filter(publication=publication)  
 
         return publication
+
+
+class CreatePublication(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        wall = get_object_or_404(User, slug=request.data['wall'])
+        request.data['wall'] = wall.pk
+        serializer = PublicationSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                    **serializer.data,
+                    "autor": {
+                        "username": request.user.username,
+                        "slug": request.user.slug
+                    },
+                    "up_voice": [],
+                    "down_voice": []
+                },
+                status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Put voice on publications
@@ -80,6 +104,7 @@ class Profile(APIView):
             publication.down_voice = Voice.objects.filter(
                 type=VoiceTypeChoices.DOWN,
                 publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
 
         user.publications = publications
         user_serializer = UserSerializer(user)

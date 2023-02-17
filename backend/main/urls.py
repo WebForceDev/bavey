@@ -7,6 +7,7 @@ from .models import VoiceTypeChoices
 urlpatterns = [
     path('user/<slug:slug>', views.UserRetrieve.as_view()),
     path('profile', views.Profile.as_view()),
+    path('publication/createPublication', views.CreatePublication.as_view()),
     path('publication/<slug:slug>', views.PublicationRetrieve.as_view()),
     path(
         'publication/<slug:slug>/setupvoice',

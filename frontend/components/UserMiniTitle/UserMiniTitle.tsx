@@ -1,16 +1,17 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { UserMiniTitleStyled, UserName, UserInfo} from "./style";
 import AvatarImage from "../../public/Avatar.png"
-import { IUser } from "../../types/user";
+import { IUserMini } from "../../types/user";
 
 
 interface IUserMiniTitleProps {
-  user: IUser
+  autor: IUserMini
 }
 
-const UserMiniTitle: React.FC<IUserMiniTitleProps> = ({ user }) => {
+const UserMiniTitle: React.FC<IUserMiniTitleProps> = ({ autor }) => {
   return (
     <UserMiniTitleStyled>
       <Image
@@ -20,8 +21,9 @@ const UserMiniTitle: React.FC<IUserMiniTitleProps> = ({ user }) => {
         height={50}
       />
       <UserInfo>
-        <UserName>{ user.username }</UserName>
-        <a href={user.slug}>{user.slug}</a>
+        <Link href={ autor.slug }>
+          { autor.username }
+        </Link>
       </UserInfo>
     </UserMiniTitleStyled>
   )

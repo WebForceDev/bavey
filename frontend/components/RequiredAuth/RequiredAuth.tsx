@@ -13,13 +13,11 @@ const RequiredAuth: React.FC<IRequiredAuth> = ({ children }) => {
     const authContext = useAuth();
 
     useEffect(()=>{
-        console.log('context ')
         if (authContext?.token == '') {
             router.push({
                 pathname: '/login',
             });
         }
-        console.log(authContext?.token)
     }, [])
 
     return (

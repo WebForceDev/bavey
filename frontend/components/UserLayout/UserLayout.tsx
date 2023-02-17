@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Publication from '../../components/Publication/Publication';
 import Board from '../../components/Board/Board';
@@ -7,6 +7,7 @@ import BaseLayout from '../../components/BaseLayout/BaseLayout';
 import ContentGrid from '../../styles/components/ContentGrid';
 import Margin from '../../styles/components/Margin';
 import WrapperStyled from "../../styles/components/Wrapper"
+import PublicationCreator from '../PublicationCreator/PublicationCreator';
 import { IUser } from '../../types/user';
 
 
@@ -16,7 +17,9 @@ interface IUserLayoutProps {
 }
 
 const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
-  const publications = user.publications.map((publication) => (
+  const [publicationList, setPublicationList] = useState(user.publications)
+
+  const publications = publicationList.map((publication) => (
       <Margin mg='0 0 30px 0' key={publication.slug}>
         <Publication publication={publication} user={user} />
       </Margin>
@@ -32,43 +35,46 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
                 <Margin mg='0 0 15px 0'>
                   <Board>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user} />
+                      <UserMiniTitle autor={user} />
                     </Margin>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
+                      <UserMiniTitle autor={user}  />
                     </Margin>
                     <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
+                      <UserMiniTitle autor={user}  />
                     </Margin>
                   </Board>
                 </Margin>
                 <Board>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                 </Board>
               </div>
 
               <div>
-                  { publications }  
+                <Margin mg='0 0 30px 0'>
+                  <PublicationCreator setPublicationList={setPublicationList} wall={user.slug} />
+                </Margin>
+                  { publications.reverse() }  
               </div>
 
               <div>
                 <Board>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
+                    <UserMiniTitle autor={user}  />
                   </Margin>
                 </Board>
               </div>
