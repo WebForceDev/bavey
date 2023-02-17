@@ -8,5 +8,6 @@ admin.site.register(models.User)
 admin.site.register(models.Publication)
 admin.site.register(models.Voice)
 admin.site.register(models.PublicationMedia)
+admin.site.register(models.Relationships)
 
 admin.site.register(Session)
