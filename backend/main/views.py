@@ -1,14 +1,14 @@
-from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer, PublicationAutorSerializer
-from .permission import IsUserProfile
+from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer
 
 
 # Retrieve user's informations and user's publications
@@ -34,6 +34,15 @@ class UserRetrieve(RetrieveAPIView):
 
         user.publications = publications
         return user
+
+
+class UserFriends(ListAPIView):
+    serializer_class = RelationshipsSerializer
+
+    def get_queryset(self):
+        user = get_object_or_404(User, slug=self.kwargs['slug'])
+        relationships = Relationships.objects.filter(Q(from_user=user) | Q(to_user=user))  
+        return relationships
 
 
 # Retrieve publication's informations
@@ -109,3 +118,4 @@ class Profile(APIView):
         user.publications = publications
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status.HTTP_200_OK)
+
