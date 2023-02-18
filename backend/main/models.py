@@ -41,7 +41,7 @@ class User(AbstractUser):
 class RelationshipsTypeChoices(models.TextChoices):
     FRIEND = 'friend'
     SUBSCRIBER = 'subscriber'
-    
+
 
 class Relationships(models.Model):
     from_user = models.ForeignKey(
@@ -55,6 +55,18 @@ class Relationships(models.Model):
     relationships_type = models.CharField(
         max_length=10,
         choices=RelationshipsTypeChoices.choices)
+
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sender')
+    recipient = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipient')
+    message = models.TextField()
 
 
 class Publication(models.Model):
