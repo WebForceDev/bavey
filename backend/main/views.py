@@ -6,9 +6,9 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer
+from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer
 
 
 # Retrieve user's informations and user's publications
@@ -43,6 +43,19 @@ class UserFriends(ListAPIView):
         user = get_object_or_404(User, slug=self.kwargs['slug'])
         relationships = Relationships.objects.filter(Q(from_user=user) | Q(to_user=user))  
         return relationships
+
+
+class UserFriendRequests(APIView):
+    def get(self, request, slug):
+        user = get_object_or_404(User, slug=slug)
+        outside = FriendRequest.objects.filter(recipient=user)
+        inside = FriendRequest.objects.filter(sender=user)
+        outside_serializer = FriendRequestSerializer(outside, many=True)
+        inside_serializer = FriendRequestSerializer(inside, many=True)
+        return Response({
+            'outside': outside_serializer.data,
+            'inside': inside_serializer.data,
+        }, status=status.HTTP_200_OK)
 
 
 # Retrieve publication's informations
