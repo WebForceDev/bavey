@@ -46,10 +46,9 @@ class UserFriends(ListAPIView):
 
 
 class UserFriendRequests(APIView):
-    def get(self, request, slug):
-        user = get_object_or_404(User, slug=slug)
-        outside = FriendRequest.objects.filter(recipient=user)
-        inside = FriendRequest.objects.filter(sender=user)
+    def get(self, request):
+        outside = FriendRequest.objects.filter(recipient=request.user)
+        inside = FriendRequest.objects.filter(sender=request.user)
         outside_serializer = FriendRequestSerializer(outside, many=True)
         inside_serializer = FriendRequestSerializer(inside, many=True)
         return Response({
