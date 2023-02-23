@@ -18,7 +18,6 @@ interface IUserLayoutProps {
 
 const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
   const [publicationList, setPublicationList] = useState(user.publications)
-
   const publications = publicationList.map((publication) => (
       <Margin mg='0 0 30px 0' key={publication.slug}>
         <Publication publication={publication} user={user} />

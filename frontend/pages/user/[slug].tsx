@@ -25,7 +25,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     `http://${process.env.HOST}:${process.env.BACKEND_PORT}/api/v1.0/user/${slug}`
   );
   const user:IUser = await response.json();
-
   return {
     props: { user }
   }
