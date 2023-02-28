@@ -7,21 +7,25 @@ import { RelationStyled, UserName, UserInfo, UserSendMessage } from './style';
 import photo from '../../public/Avatar.png';
 
 
-const Relation = () => {
+interface IRelation {
+    slug:string
+}
+
+const Relation: React.FC<IRelation> = ({ slug }) => {
     return (
         <RelationStyled>
             <Image
                 src={photo}
-                alt="user"
+                alt={slug}
                 width={90}
                 height={90}
             />
             <UserInfo>
                 <UserName>
-                    <Link href='/user/root'>Root</Link>
+                    <Link href={`/user/${slug}`}>{slug}</Link>
                 </UserName>
                 <UserSendMessage>
-                    <Link href='/user/root/sendmessage'>Send message</Link>
+                    <Link href={`/user/${slug}/sendmessage`}>Send message</Link>
                 </UserSendMessage>
             </UserInfo>
         </RelationStyled>
