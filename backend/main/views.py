@@ -37,8 +37,15 @@ class UserRetrieve(RetrieveAPIView):
 
 
 class UserRelationships(ListAPIView):
-    def get(self, request, slug):
-        user = get_object_or_404(User, slug=slug)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        slug = request.GET.get('slug')
+
+        if slug:
+            user = get_object_or_404(User, slug=slug)
+
         relationships = Relationships.objects.filter(Q(from_user=user) | Q(to_user=user))  
         
         subscribers = relationships.filter(
@@ -60,6 +67,8 @@ class UserRelationships(ListAPIView):
 
 
 class UserFriendRequests(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         outside = FriendRequest.objects.filter(recipient=request.user)
         inside = FriendRequest.objects.filter(sender=request.user)
