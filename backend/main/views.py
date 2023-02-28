@@ -6,7 +6,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
 from .mixins import SetVoiceMixin
 from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer
 
@@ -36,13 +36,27 @@ class UserRetrieve(RetrieveAPIView):
         return user
 
 
-class UserFriends(ListAPIView):
-    serializer_class = RelationshipsSerializer
-
-    def get_queryset(self):
-        user = get_object_or_404(User, slug=self.kwargs['slug'])
+class UserRelationships(ListAPIView):
+    def get(self, request, slug):
+        user = get_object_or_404(User, slug=slug)
         relationships = Relationships.objects.filter(Q(from_user=user) | Q(to_user=user))  
-        return relationships
+        
+        subscribers = relationships.filter(
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER,
+            to_user=user)
+        friends = relationships.filter(relationships_type=RelationshipsTypeChoices.FRIEND)
+        subscriptions = relationships.filter(
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER,
+            from_user=user)
+
+        subscribers_serializer = RelationshipsSerializer(subscribers, many=True)
+        friends_serializer = RelationshipsSerializer(friends, many=True)
+        subscriptions_serializer = RelationshipsSerializer(subscriptions, many=True)
+        return Response({
+            'subscribers': subscribers_serializer.data,
+            'friends': friends_serializer.data,
+            'subscriptions': subscriptions_serializer.data
+        }, status=status.HTTP_200_OK)
 
 
 class UserFriendRequests(APIView):

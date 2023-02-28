@@ -5,7 +5,7 @@ from .models import VoiceTypeChoices
 
 
 urlpatterns = [
-    path('user/<slug:slug>/friends', views.UserFriends.as_view()),
+    path('user/<slug:slug>/relations', views.UserRelationships.as_view()),
     path('user/<slug:slug>', views.UserRetrieve.as_view()),
     path('profile/friendrequest', views.UserFriendRequests.as_view()),
     path('profile', views.Profile.as_view()),
