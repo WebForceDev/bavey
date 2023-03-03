@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import Publication from '../../components/Publication/Publication';
 import Board from '../../components/Board/Board';
@@ -8,21 +9,35 @@ import ContentGrid from '../../styles/components/ContentGrid';
 import Margin from '../../styles/components/Margin';
 import WrapperStyled from "../../styles/components/Wrapper"
 import PublicationCreator from '../PublicationCreator/PublicationCreator';
+import { useRelationsQuery } from '../../redux/api/userApi';
 import { IUser } from '../../types/user';
 
 
 interface IUserLayoutProps {
   user:IUser,
-  children: any
+  children: any,
 }
 
-const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
+const UserLayout: React.FC<IUserLayoutProps> = ({ user, children }) => {
   const [publicationList, setPublicationList] = useState(user.publications)
+  const router = useRouter();
+  const { data, isLoading } = useRelationsQuery({slug: router.query.slug});
+
   const publications = publicationList.map((publication) => (
       <Margin mg='0 0 30px 0' key={publication.slug}>
         <Publication publication={publication} user={user} />
       </Margin>
   ));
+
+  let friends: any[] = [];
+
+  if (data)  {
+    friends = data.friends.slice(0,6).map((friend) => (
+      <Margin mg='8px 0 0 0' key={friend.from_user.slug}>
+        <UserMiniTitle autor={friend.from_user}  />
+      </Margin>
+    ));
+  }
 
   return (
     <BaseLayout>
@@ -32,29 +47,12 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
           <ContentGrid>
               <div>
                 <Margin mg='0 0 15px 0'>
-                  <Board>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle autor={user} />
-                    </Margin>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle autor={user}  />
-                    </Margin>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle autor={user}  />
-                    </Margin>
+                {isLoading ? 'Loading' : 
+                  <Board title='Friends' href={`/friends?slug=${user.slug}`}>
+                    { friends }
                   </Board>
+                }
                 </Margin>
-                <Board>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
-                  </Margin>
-                </Board>
               </div>
 
               <div>
@@ -65,7 +63,7 @@ const UserLayout: React.FC<IUserLayoutProps> = ({user, children}) => {
               </div>
 
               <div>
-                <Board>
+                <Board title='Statistics'>
                   <Margin mg='8px 0 0 0'>
                     <UserMiniTitle autor={user}  />
                   </Margin>
