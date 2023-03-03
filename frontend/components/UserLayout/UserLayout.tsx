@@ -30,8 +30,13 @@ const UserLayout: React.FC<IUserLayoutProps> = ({ user, children }) => {
   ));
 
   let friends: any[] = [];
-
+  let subscribersColunt = 0;
+  let friendsColunt = 0;
+  let publicationsColunt = 0;
   if (data)  {
+    subscribersColunt =  data.subscribers.length;
+    friendsColunt =  data.friends.length;
+    publicationsColunt =  publicationList.length;
     friends = data.friends.slice(0,6).map((friend) => (
       <Margin mg='8px 0 0 0' key={friend.from_user.slug}>
         <UserMiniTitle autor={friend.from_user}  />
@@ -63,17 +68,19 @@ const UserLayout: React.FC<IUserLayoutProps> = ({ user, children }) => {
               </div>
 
               <div>
+              {isLoading ? 'Loading' : 
                 <Board title='Statistics'>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
+                    Subscribers: { subscribersColunt }
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
+                    Friends: { friendsColunt }
                   </Margin>
                   <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle autor={user}  />
+                    Publications count: { publicationsColunt }
                   </Margin>
                 </Board>
+              }
               </div>
           </ContentGrid>
         </Margin>
