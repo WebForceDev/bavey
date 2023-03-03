@@ -12,10 +12,11 @@ import Margin from "../../styles/components/Margin";
 
 interface IFriendRequestInsideProps {
     user: IUser,
-    message: string
+    message: string,
+    outside: boolean
 }
 
-const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, message }) => {
+const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, message, outside }) => {
     return (
         <FriendReuestInside>
             <Image
@@ -31,8 +32,17 @@ const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, messag
                 <p>
                     { message }
                 </p>
-                <ButtonStyled fill>Accept</ButtonStyled>
-                <ButtonStyled>Reject</ButtonStyled>
+
+            { outside ?
+                <>
+                    <ButtonStyled fill>rescind</ButtonStyled>
+                </>
+                : 
+                <>
+                    <ButtonStyled fill>Accept</ButtonStyled>
+                    <ButtonStyled>Reject</ButtonStyled>
+                </>
+            }
             </Margin>
         </FriendReuestInside>
     )

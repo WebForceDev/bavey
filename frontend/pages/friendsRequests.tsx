@@ -10,10 +10,14 @@ const FriendsPage: NextPage = () => {
   const { data, isLoading } = useFriendRequestsQuery();
   
   let inside: any[] = [];
+  let outside: any[] = [];
 
   if (data)  {
     inside = data.inside.map((req) => (
-       <FriendRequestInside user={req.sender} message={req.message} key={req.sender.slug} />
+       <FriendRequestInside user={req.sender} message={req.message} key={req.sender.slug} outside={false} />
+    ));
+    outside = data.outside.map((req) => (
+      <FriendRequestInside user={req.recipient} message={req.message} key={req.sender.slug} outside />
     ));
   }
 
@@ -21,12 +25,22 @@ const FriendsPage: NextPage = () => {
     <TwoColumnLayout>
         <div>
         {isLoading ? 'Loading' : 
-         inside
+          <>
+            <div id="inside">
+              { inside }
+            </div>
+            <div id="outside">
+              { outside }
+            </div>
+          </>
         }
         </div>
         <div>
           <Link href="/friends">My friends</Link>
           <Link href="/friendsRequests">My friend request</Link>
+
+          <Link href="#inside">inside</Link>
+          <Link href="#outside">outside</Link>
         </div>
     </TwoColumnLayout>
   )

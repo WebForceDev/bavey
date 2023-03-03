@@ -27,3 +27,9 @@ export interface IRelation  {
     to_user: IUser,
     relationships_type: string
 }
+
+export interface IFriendRequest {
+    sender: IUser,
+    recipient: IUser,
+    message: string
+};

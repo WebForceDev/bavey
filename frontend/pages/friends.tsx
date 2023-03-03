@@ -32,8 +32,8 @@ const FriendsPage: NextPage = () => {
         }
         </div>
         <div>
-          <Link href="#">My friends</Link>
-          <Link href="#">My friend request</Link>
+          <Link href="/friends">My friends</Link>
+          <Link href="/friendsRequests">My friend request</Link>
         </div>
     </TwoColumnLayout>
   )
