@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { IRelation } from '../../types/user';
+import { IRelation, IFriendRequest } from '../../types/user';
 
 
 const BASE_URL = `http://194.58.107.140:8080`;
@@ -19,6 +19,11 @@ interface IRelationsApiResult {
   subscriptions: [IRelation],
 }
 
+interface IFriendReqrusetsApiResult {
+  outside: [IFriendRequest],
+  inside: [IFriendRequest]
+}
+
 export const userApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['User'],
@@ -34,6 +39,7 @@ export const userApi = createApi({
         }
       })
     }),
+
     relations: builder.query<IRelationsApiResult, IRelationsApiArg>({
       query: (req) => ({
         url: `relations?slug=${req.slug}`,
@@ -41,11 +47,22 @@ export const userApi = createApi({
           Authorization: `Token ${ localStorage.getItem('token') }`
         } 
       })
+    }),
+
+    friendRequests: builder.query<IFriendReqrusetsApiResult, void>({
+      query: (req) => ({
+        url: `profile/friendrequest`,
+        headers: {
+          Authorization: `Token ${ localStorage.getItem('token') }`
+        } 
+      })
     })
+
   }),
 });
 
 export const {
   useProfileQuery,
-  useRelationsQuery
+  useRelationsQuery,
+  useFriendRequestsQuery
 } = userApi;
