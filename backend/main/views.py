@@ -206,3 +206,25 @@ class FriendRequestReject(APIView):
         friend_request.delete()
     
         return Response({ "Message": "Friend request rejected" })
+    
+
+class RelationDeleteFriend(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        friend = get_object_or_404(User, slug=slug)
+        user = request.user
+
+        q1 = Q(from_user=user, to_user=friend)
+        q2 = Q(from_user=friend, to_user=user)
+
+        relationships = get_object_or_404(Relationships, q1 | q2)
+        relationships.delete()
+
+        Relationships.objects.create(
+            from_user=friend,
+            to_user=user,
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER
+        )
+    
+        return Response({ "Message": "User sent to subscribers" })
