@@ -154,3 +154,55 @@ class Profile(APIView):
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status.HTTP_200_OK)
 
+class FriendRequestCreate(APIView): 
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, slug):
+        sender_user = request.user
+        recipient = get_object_or_404(User, slug=slug)
+
+        message = ''
+        if 'message' in request.data:
+            message = request.data['message']
+
+        relation = Relationships.objects.create(
+            from_user=sender_user,
+            to_user=recipient,
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER
+        )
+        friend_request = FriendRequest.objects.create(
+            sender=sender_user,
+            recipient=recipient,
+            message=message
+        )
+        return Response({
+            'relation': RelationshipsSerializer(relation).data,
+            'friend_request': FriendRequestSerializer(friend_request).data
+        }, status.HTTP_200_OK)
+
+
+class FriendRequestAccept(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        sender = get_object_or_404(User, slug=slug)
+        friend_request = get_object_or_404(FriendRequest, sender=sender, recipient=request.user)
+
+        relation = get_object_or_404(Relationships, from_user=sender, to_user=request.user)
+        relation.relationships_type = RelationshipsTypeChoices.FRIEND
+        relation.save()
+
+        friend_request.delete()
+    
+        return Response({ "Message": "User added in friends" })
+
+
+class FriendRequestReject(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        sender = get_object_or_404(User, slug=slug)
+        friend_request = get_object_or_404(FriendRequest, sender=sender, recipient=request.user)
+        friend_request.delete()
+    
+        return Response({ "Message": "Friend request rejected" })
