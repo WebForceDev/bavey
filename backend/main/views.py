@@ -243,4 +243,6 @@ class RelationUnsubscribe(APIView):
         relationships = get_object_or_404(Relationships, q1 | q2)
         relationships.delete()
 
+        FriendRequest.objects.filter(sender=user, recipient=friend).delete()
+
         return Response({ "Message": "Unsubscribed from the user" })

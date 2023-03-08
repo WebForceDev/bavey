@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import FriendRequestInside from '../components/FriendRequestInside/FriendRequestInside';
 import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
-import { useFriendRequestsQuery } from '../redux/api/userApi';
+import { useFriendRequestsQuery } from '../redux/api/friendrequestApi';
 
 
 const FriendsPage: NextPage = () => {
@@ -14,10 +14,10 @@ const FriendsPage: NextPage = () => {
 
   if (data)  {
     inside = data.inside.map((req) => (
-       <FriendRequestInside user={req.sender} message={req.message} key={req.sender.slug} outside={false} />
+       <FriendRequestInside user={req.recipient} message={req.message} key={req.sender.slug} outside={true} />
     ));
     outside = data.outside.map((req) => (
-      <FriendRequestInside user={req.recipient} message={req.message} key={req.sender.slug} outside />
+      <FriendRequestInside user={req.sender} message={req.message} key={req.sender.slug} outside={false} />
     ));
   }
 
