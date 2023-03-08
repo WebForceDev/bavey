@@ -258,6 +258,9 @@ class RelationType(APIView):
         q1 = Q(from_user=user, to_user=friend)
         q2 = Q(from_user=friend, to_user=user)
 
-        relationships = get_object_or_404(Relationships, q1 | q2)
+        relation_type = 'nobody'
+        relations = Relationships.objects.filter(q1 | q2)
+        if relations.count() > 0:
+            relation_type = relations.first().relationships_type
 
-        return Response({ "relation_type": relationships.relationships_type })
+        return Response({ "relation_type": relation_type })

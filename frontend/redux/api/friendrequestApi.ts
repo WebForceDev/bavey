@@ -32,6 +32,15 @@ export const friendrequestApi = createApi({
       providesTags: ['FriendRequest']
     }),
 
+    relationType: builder.query<any, ISlugArgs>({
+      query: (req) => ({
+        url: `relations/type/${req.slug}`,
+        headers: {
+          Authorization: `Token ${ localStorage.getItem('token') }`
+        },
+      })
+    }),
+
     accept: builder.mutation<any, ISlugArgs>({
         query(req) {
           return {
@@ -75,5 +84,6 @@ export const {
     useFriendRequestsQuery,
     useAcceptMutation,
     useRejectMutation,
-    useUnsubscribeMutation
+    useUnsubscribeMutation,
+    useRelationTypeQuery
 } = friendrequestApi;

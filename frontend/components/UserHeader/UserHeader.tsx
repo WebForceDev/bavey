@@ -22,7 +22,7 @@ const UserHeader: React.FC<IProfileHeaderProps> = ({ user }) => {
             <WrapperStyled>
                 <ContentGrid>
                     <ProfileTitle>
-                        <UserTitle />
+                        <UserTitle user={user} />
                     </ProfileTitle>
                     <FlexStyled justifyContent="space-between" alignItems="flex-start">
                         <div>

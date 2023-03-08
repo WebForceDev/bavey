@@ -3,12 +3,19 @@ import Image from "next/image";
 
 import {UserTitleStyled} from './style';
 import Button from '../../styles/components/Button';
-
+import { useRelationTypeQuery } from "../../redux/api/friendrequestApi";
+import { IUser } from "../../types/user";
 
 import AvatarImage from "../../public/Avatar.png";
 
 
-const UserTitle: React.FC = () => {
+interface IUserTitle {
+  user: IUser
+}
+
+const UserTitle: React.FC<IUserTitle> = ({ user }) => {
+  const { data, isLoading } = useRelationTypeQuery({slug: user.slug});
+
   return (
     <UserTitleStyled>
         <Image
@@ -18,7 +25,16 @@ const UserTitle: React.FC = () => {
           height={189}
         />
         <Button fill>Send message</Button>
-        <Button>Subscribe</Button>
+
+        { !isLoading && data.relation_type == 'subscriber' &&
+              <Button>Unsubscribe</Button>
+        }
+        { !isLoading && data.relation_type == 'friend' &&
+              <Button>Unfriend</Button>
+        }
+        { !isLoading && data.relation_type == 'nobody' &&
+              <Button>Subscribe</Button>
+        }
     </UserTitleStyled>
   )
 };
