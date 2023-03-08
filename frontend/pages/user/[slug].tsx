@@ -21,10 +21,10 @@ export default UserPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const slug = context.query.slug;
-  const response = await fetch(
+  const responseUserInfo = await fetch(
     `http://${process.env.HOST}:${process.env.BACKEND_PORT}/api/v1.0/user/${slug}`
   );
-  const user:IUser = await response.json();
+  const user:IUser = await responseUserInfo.json();
 
   return {
     props: { user }

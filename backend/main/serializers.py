@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Publication, User, Voice, PublicationMedia
+from main.models import Publication, User, Voice, PublicationMedia, Relationships, FriendRequest
 
 
 class VoiceSerializer(serializers.ModelSerializer):
@@ -65,3 +65,21 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'publications'
         ]
+
+
+class RelationshipsSerializer(serializers.ModelSerializer):
+    from_user = UserSerializer()
+    to_user = UserSerializer()
+
+    class Meta:
+        model = Relationships
+        fields = ['from_user', 'to_user', 'relationships_type']
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    recipient = UserSerializer()
+    sender = UserSerializer()
+
+    class Meta:
+        model = FriendRequest
+        fields = ['sender', 'recipient', 'message']

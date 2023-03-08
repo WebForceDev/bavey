@@ -1,17 +1,28 @@
 import React from "react";
+import Link from "next/link";
 
 import { BoardStyled, BoardTitleStyled } from "./style";
 
 
 interface IBoard {
-  children: any
+  title: string,
+  children: any,
+  href?: string
 }
 
-const Board: React.FC<IBoard> = (props) => {
+const Board: React.FC<IBoard> = ({ title, children, href }) => {
   return (
     <BoardStyled>
-        <BoardTitleStyled>Title</BoardTitleStyled>
-        { props.children }
+        {href ?
+          <Link href={href}>
+            <BoardTitleStyled>
+              {title}
+            </BoardTitleStyled>
+          </Link>
+          :
+          <BoardTitleStyled>{title}</BoardTitleStyled>
+        }
+        { children }
     </BoardStyled>
   )
 };

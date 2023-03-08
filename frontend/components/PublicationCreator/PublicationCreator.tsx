@@ -27,6 +27,7 @@ const PublicationCreator:React.FC<IPublicationCreatorProps> = ({setPublicationLi
                 wall
             });
             const data = await req;
+
             setPublicationList((prevState) => {
                 setInputValues('');
                 return [...prevState, data.data]

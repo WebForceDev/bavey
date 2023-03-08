@@ -38,6 +38,37 @@ class User(AbstractUser):
         super(User, self).save(*args, **kwargs)
 
 
+class RelationshipsTypeChoices(models.TextChoices):
+    FRIEND = 'friend'
+    SUBSCRIBER = 'subscriber'
+
+
+class Relationships(models.Model):
+    from_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='from_user')
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='to_user')
+    relationships_type = models.CharField(
+        max_length=10,
+        choices=RelationshipsTypeChoices.choices)
+
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sender')
+    recipient = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipient')
+    message = models.TextField()
+
+
 class Publication(models.Model):
     title = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')

@@ -1,14 +1,14 @@
-from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia
+from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer, PublicationAutorSerializer
-from .permission import IsUserProfile
+from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer
 
 
 # Retrieve user's informations and user's publications
@@ -34,6 +34,50 @@ class UserRetrieve(RetrieveAPIView):
 
         user.publications = publications
         return user
+
+
+class UserRelationships(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        slug = request.GET.get('slug')
+
+        if slug:
+            user = get_object_or_404(User, slug=slug)
+
+        relationships = Relationships.objects.filter(Q(from_user=user) | Q(to_user=user))  
+        
+        subscribers = relationships.filter(
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER,
+            to_user=user)
+        friends = relationships.filter(relationships_type=RelationshipsTypeChoices.FRIEND)
+        subscriptions = relationships.filter(
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER,
+            from_user=user)
+
+        subscribers_serializer = RelationshipsSerializer(subscribers, many=True)
+        friends_serializer = RelationshipsSerializer(friends, many=True)
+        subscriptions_serializer = RelationshipsSerializer(subscriptions, many=True)
+        return Response({
+            'subscribers': subscribers_serializer.data,
+            'friends': friends_serializer.data,
+            'subscriptions': subscriptions_serializer.data
+        }, status=status.HTTP_200_OK)
+
+
+class UserFriendRequests(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        outside = FriendRequest.objects.filter(recipient=request.user)
+        inside = FriendRequest.objects.filter(sender=request.user)
+        outside_serializer = FriendRequestSerializer(outside, many=True)
+        inside_serializer = FriendRequestSerializer(inside, many=True)
+        return Response({
+            'outside': outside_serializer.data,
+            'inside': inside_serializer.data,
+        }, status=status.HTTP_200_OK)
 
 
 # Retrieve publication's informations
@@ -109,3 +153,114 @@ class Profile(APIView):
         user.publications = publications
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status.HTTP_200_OK)
+
+class FriendRequestCreate(APIView): 
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, slug):
+        sender_user = request.user
+        recipient = get_object_or_404(User, slug=slug)
+
+        message = ''
+        if 'message' in request.data:
+            message = request.data['message']
+
+        relation = Relationships.objects.create(
+            from_user=sender_user,
+            to_user=recipient,
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER
+        )
+        friend_request = FriendRequest.objects.create(
+            sender=sender_user,
+            recipient=recipient,
+            message=message
+        )
+        return Response({
+            'relation': RelationshipsSerializer(relation).data,
+            'friend_request': FriendRequestSerializer(friend_request).data
+        }, status.HTTP_200_OK)
+
+
+class FriendRequestAccept(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        sender = get_object_or_404(User, slug=slug)
+        friend_request = get_object_or_404(FriendRequest, sender=sender, recipient=request.user)
+
+        relation = get_object_or_404(Relationships, from_user=sender, to_user=request.user)
+        relation.relationships_type = RelationshipsTypeChoices.FRIEND
+        relation.save()
+
+        friend_request.delete()
+    
+        return Response({ "Message": "User added in friends" })
+
+
+class FriendRequestReject(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        sender = get_object_or_404(User, slug=slug)
+        friend_request = get_object_or_404(FriendRequest, sender=sender, recipient=request.user)
+        friend_request.delete()
+    
+        return Response({ "Message": "Friend request rejected" })
+    
+
+class RelationDeleteFriend(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        friend = get_object_or_404(User, slug=slug)
+        user = request.user
+
+        q1 = Q(from_user=user, to_user=friend)
+        q2 = Q(from_user=friend, to_user=user)
+
+        relationships = get_object_or_404(Relationships, q1 | q2)
+        relationships.delete()
+
+        Relationships.objects.create(
+            from_user=friend,
+            to_user=user,
+            relationships_type=RelationshipsTypeChoices.SUBSCRIBER
+        )
+    
+        return Response({ "Message": "User sent to subscribers" })
+
+
+class RelationUnsubscribe(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        friend = get_object_or_404(User, slug=slug)
+        user = request.user
+
+        q1 = Q(from_user=user, to_user=friend)
+        q2 = Q(from_user=friend, to_user=user)
+
+        relationships = get_object_or_404(Relationships, q1 | q2)
+        relationships.delete()
+
+        FriendRequest.objects.filter(sender=user, recipient=friend).delete()
+
+        return Response({ "Message": "Unsubscribed from the user" })
+
+
+class RelationType(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        friend = get_object_or_404(User, slug=slug)
+        user = request.user
+
+        q1 = Q(from_user=user, to_user=friend)
+        q2 = Q(from_user=friend, to_user=user)
+
+        relation_type = 'nobody'
+        relations = Relationships.objects.filter(q1 | q2)
+        if relations.count() > 0:
+            relation_type = relations.first().relationships_type
+
+        return Response({ "relation_type": relation_type })

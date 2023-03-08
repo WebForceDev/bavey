@@ -21,3 +21,15 @@ export interface IUser {
     last_name: string,
     publications:[IPublication]
 }
+
+export interface IRelation  {
+    from_user: IUser,
+    to_user: IUser,
+    relationships_type: string
+}
+
+export interface IFriendRequest {
+    sender: IUser,
+    recipient: IUser,
+    message: string
+};
