@@ -264,3 +264,11 @@ class RelationType(APIView):
             relation_type = relations.first().relationships_type
 
         return Response({ "relation_type": relation_type })
+    
+
+class SavedPublication(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, saved_type):
+        publication = Publication.objects.filter(voice__user=request.user, voice__type=saved_type)
+        return Response({'publications': PublicationSerializer(publication, many=True).data})

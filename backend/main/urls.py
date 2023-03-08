@@ -20,6 +20,7 @@ urlpatterns = [
     path('profile', views.Profile.as_view()),
 
     path('publication/createPublication', views.CreatePublication.as_view()),
+    path('publication/saved/<str:saved_type>', views.SavedPublication.as_view()),
     path('publication/<slug:slug>', views.PublicationRetrieve.as_view()),
     path(
         'publication/<slug:slug>/setupvoice',
