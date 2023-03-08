@@ -12,6 +12,7 @@ urlpatterns = [
     path('friendrequest/reject/<slug:slug>', views.FriendRequestReject.as_view()),
 
     path('relations', views.UserRelationships.as_view()),
+    path('relations/type/<slug:slug>', views.RelationType.as_view()),
     path('relations/deletefriend/<slug:slug>', views.RelationDeleteFriend.as_view()),
     path('relations/unsubscribe/<slug:slug>', views.RelationUnsubscribe.as_view()),
 

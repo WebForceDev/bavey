@@ -246,3 +246,18 @@ class RelationUnsubscribe(APIView):
         FriendRequest.objects.filter(sender=user, recipient=friend).delete()
 
         return Response({ "Message": "Unsubscribed from the user" })
+
+
+class RelationType(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        friend = get_object_or_404(User, slug=slug)
+        user = request.user
+
+        q1 = Q(from_user=user, to_user=friend)
+        q2 = Q(from_user=friend, to_user=user)
+
+        relationships = get_object_or_404(Relationships, q1 | q2)
+
+        return Response({ "relation_type": relationships.relationships_type })
