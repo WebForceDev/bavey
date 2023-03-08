@@ -31,3 +31,8 @@ export const NavigationBlockStyled = styled.div<IPropsNavigationBlockStyled>`
         }
     `}
 `;
+
+export const NavigationBlockTitleStyled = styled.div`
+    user-select: none;
+    font-weight: 300px;
+`

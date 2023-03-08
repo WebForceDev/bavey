@@ -2,6 +2,7 @@ import type { NextPage, GetServerSidePropsContext } from 'next'
 
 import UserLayout from '../../components/UserLayout/UserLayout';
 import UserHeader from '../../components/UserHeader/UserHeader';
+import { useNavigation } from '../../providers/NavigationProviders';
 import { IUser } from '../../types/user';
 
 
@@ -10,6 +11,8 @@ interface IUserPageProps {
 }
 
 const UserPage: NextPage<IUserPageProps> = ({user}) => {
+  const navigationContext = useNavigation();
+  navigationContext?.setActivePage(user.slug)
   return (
     <UserLayout user={ user }>
       <UserHeader user={ user } />

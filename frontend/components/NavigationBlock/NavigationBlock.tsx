@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { NavigationBlockStyled } from './style';
+import { NavigationBlockStyled, NavigationBlockTitleStyled } from './style';
 import FlexStyled from '../../styles/components/Flex';
 import Margin from '../../styles/components/Margin';
+import { useNavigation } from '../../providers/NavigationProviders';
 
 import Arrow from "../../public/arrow.svg";
 
 
 const NavigationBlock: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigationContext = useNavigation();
 
     return (
         <NavigationBlockStyled
@@ -19,7 +21,7 @@ const NavigationBlock: React.FC = () => {
         >
 
         <FlexStyled alignItems='center' justifyContent='space-between' >
-            saved post
+            <NavigationBlockTitleStyled>{ navigationContext?.activePage }</NavigationBlockTitleStyled>
             <Image src={Arrow} alt="arrow" />
         </FlexStyled>
         
@@ -32,7 +34,7 @@ const NavigationBlock: React.FC = () => {
                     </Margin>
                     <Margin mg='10px 0 0 0'>
                     <div>
-                        <Link href='/savedpost'>saved post</Link>
+                        <Link href='/saved/upvoice'>saved post</Link>
                     </div>
                 </Margin>
             </>

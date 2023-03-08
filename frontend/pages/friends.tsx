@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 
-
+import { useNavigation } from '../providers/NavigationProviders';
 import Relation from '../components/Relation/Relation';
 import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
 import { useRelationsQuery } from '../redux/api/userApi';
@@ -10,6 +10,9 @@ import { useRelationsQuery } from '../redux/api/userApi';
 
 const FriendsPage: NextPage = () => {
   const router = useRouter();
+  const navigationContext = useNavigation();
+  navigationContext?.setActivePage('Friends')
+
   let slug: string|string[] = ""
   if (router.query.slug ){
     slug = router.query.slug

@@ -3,11 +3,14 @@ import Link from 'next/link';
 
 import FriendRequestInside from '../components/FriendRequestInside/FriendRequestInside';
 import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
+import { useNavigation } from '../providers/NavigationProviders';
 import { useFriendRequestsQuery } from '../redux/api/friendrequestApi';
 
 
 const FriendsPage: NextPage = () => {
   const { data, isLoading } = useFriendRequestsQuery();
+  const navigationContext = useNavigation();
+  navigationContext?.setActivePage('Friends')
   
   let inside: any[] = [];
   let outside: any[] = [];
