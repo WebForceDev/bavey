@@ -38,7 +38,8 @@ export const friendrequestApi = createApi({
         headers: {
           Authorization: `Token ${ localStorage.getItem('token') }`
         },
-      })
+      }),
+      providesTags: ['FriendRequest']
     }),
 
     accept: builder.mutation<any, ISlugArgs>({
@@ -65,6 +66,19 @@ export const friendrequestApi = createApi({
         invalidatesTags: ['FriendRequest']
     }),
 
+    subscribe: builder.mutation<any, ISlugArgs>({
+      query(req) {
+        return {
+          url: `friendrequest/create/${req.slug}`,
+          headers: {
+            Authorization: `Token ${ localStorage.getItem('token') }`
+          },
+          method: 'POST'
+        };
+      },
+      invalidatesTags: ['FriendRequest']
+    }),
+
     unsubscribe: builder.mutation<any, ISlugArgs>({
         query(req) {
           return {
@@ -75,7 +89,19 @@ export const friendrequestApi = createApi({
           };
         },
         invalidatesTags: ['FriendRequest']
-    })
+    }),
+
+    deletefriend: builder.mutation<any, ISlugArgs>({
+      query(req) {
+        return {
+          url: `relations/deletefriend/${req.slug}`,
+          headers: {
+            Authorization: `Token ${ localStorage.getItem('token') }`
+          }
+        };
+      },
+      invalidatesTags: ['FriendRequest']
+  })
 
   }),
 });
@@ -85,5 +111,7 @@ export const {
     useAcceptMutation,
     useRejectMutation,
     useUnsubscribeMutation,
-    useRelationTypeQuery
+    useRelationTypeQuery,
+    useSubscribeMutation,
+    useDeletefriendMutation
 } = friendrequestApi;

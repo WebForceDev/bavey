@@ -41,7 +41,7 @@ export const userApi = createApi({
         headers: {
           Authorization: `Token ${ localStorage.getItem('token') }`
         } 
-      })
+      }),
     }),
 
   }),
