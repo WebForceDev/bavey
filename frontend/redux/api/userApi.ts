@@ -19,14 +19,9 @@ interface IRelationsApiResult {
   subscriptions: [IRelation],
 }
 
-interface IFriendReqrusetsApiResult {
-  outside: [IFriendRequest],
-  inside: [IFriendRequest]
-}
-
 export const userApi = createApi({
   reducerPath: 'userApi',
-  tagTypes: ['User'],
+  tagTypes: ['User', 'FriendRequest'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/v1.0/`,
   }),
@@ -49,20 +44,10 @@ export const userApi = createApi({
       })
     }),
 
-    friendRequests: builder.query<IFriendReqrusetsApiResult, void>({
-      query: (req) => ({
-        url: `profile/friendrequest`,
-        headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
-        } 
-      })
-    })
-
   }),
 });
 
 export const {
   useProfileQuery,
-  useRelationsQuery,
-  useFriendRequestsQuery
+  useRelationsQuery
 } = userApi;
