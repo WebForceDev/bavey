@@ -18,6 +18,7 @@ class SetVoiceMixin:
                 return None
             else:
                 voice.first().delete()
+
         Voice.objects.create(
             user=user,
             publication=publication,
@@ -35,7 +36,12 @@ class SetVoiceMixin:
             publication=publication,
             type=VoiceTypeChoices.DOWN
         ).count()
+        bookmark_count = Voice.objects.filter(
+            publication=publication,
+            type=VoiceTypeChoices.BOOKMARK
+        ).count()
         return {
             'up_voice_count': up_voice_count,
             'down_voice_count': down_voice_count,
+            'bookmark_count': bookmark_count,
         }

@@ -6,8 +6,11 @@ import { NavigationBlockStyled, NavigationBlockTitleStyled } from './style';
 import FlexStyled from '../../styles/components/Flex';
 import Margin from '../../styles/components/Margin';
 import { useNavigation } from '../../providers/NavigationProviders';
+import NavigationLink from '../NavigationLink/NavigationLink';
 
 import Arrow from "../../public/arrow.svg";
+import FriendsIcon from '../../public/friends.svg';
+import BookmarkIcon from '../../public/bookmarkIcon.svg';
 
 
 const NavigationBlock: React.FC = () => {
@@ -27,14 +30,12 @@ const NavigationBlock: React.FC = () => {
         
         { isOpen &&
             <>
-                <Margin mg='10px 0 0 0'>
-                        <div>
-                            <Link href='/friends'>friends</Link>
-                        </div>
-                    </Margin>
-                    <Margin mg='10px 0 0 0'>
+                <Margin mg='20px 0 15px 0'>
+                    <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+                </Margin>
+                <Margin mg='0 0 15px 0'>
                     <div>
-                        <Link href='/saved/upvoice'>saved post</Link>
+                        <NavigationLink text='Saved' href='/saved/up' alt='saved' icon={BookmarkIcon} />
                     </div>
                 </Margin>
             </>

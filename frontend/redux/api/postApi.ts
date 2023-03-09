@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { IPublication } from '../../types/user';
 
 
 const BASE_URL = `http://194.58.107.140:8080`;
@@ -11,6 +12,14 @@ interface ISetVoiceResult {
 interface ISetVoiceArgs {
     slug: string,
     voiceType: string
+}
+
+interface ISavedArgs {
+  type_voice: string | string[] | undefined
+}
+
+interface ISavedResult {
+  publications: [IPublication]
 }
 
 export const postApi = createApi({
@@ -43,12 +52,22 @@ export const postApi = createApi({
           }
         };
       },
-  })
+    }),
+
+    savedPublication: builder.query<ISavedResult, ISavedArgs>({
+      query: (req) => ({
+        url: `saved/${req.type_voice}`,
+        headers: {
+          Authorization: `Token ${ localStorage.getItem('token') }`
+        }
+      })
+    }),
 
   }),
 });
 
 export const {
     useSetVoiceMutation,
+    useSavedPublicationQuery,
     useCreatePublicationMutation
 } = postApi;

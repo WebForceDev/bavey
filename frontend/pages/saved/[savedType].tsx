@@ -4,34 +4,38 @@ import Link from 'next/link';
 
 import { useNavigation } from '../../providers/NavigationProviders';
 import TwoColumnLayout from '../../components/TwoColumnLayout/TwoColumnLayout';
+import { useSavedPublicationQuery } from '../../redux/api/postApi';
+import Publication from '../../components/Publication/Publication';
 
 
 const SavedPublicationPage: NextPage = () => {
-  //const { data, isLoading } = useFriendRequestsQuery();
-  const router = useRouter();
-  const { savedType } = router.query;
   const navigationContext = useNavigation();
   navigationContext?.setActivePage('Saved post')
-  const isLoading = false;
+
+  const router = useRouter();
+  const { savedType } = router.query;
+  const { data, isLoading } = useSavedPublicationQuery({type_voice: savedType});
 
   return (
     <TwoColumnLayout>
         <div>
         {isLoading ? 'Loading' : 
           <>
-            <div id="inside">
-              { 'inside' }
-            </div>
-            <div id="outside">
-              { 'outside' }
-            </div>
+            {
+              data?.publications.map((publication) => (
+                <Publication
+                  user={publication.autor}
+                  publication={publication}
+                  key={publication.slug} />
+              ))
+            }
           </>
         }
         </div>
         <div>
-          <Link href="/saved/upvoice">Up voice</Link>
-          <Link href="/saved/downvoice">Down voice</Link>
-          <Link href="/saved/saved">Saved</Link>
+          <Link href="/saved/up">Up voice</Link>
+          <Link href="/saved/down">Down voice</Link>
+          <Link href="/saved/bookmark">Bookmark</Link>
         </div>
     </TwoColumnLayout>
   )

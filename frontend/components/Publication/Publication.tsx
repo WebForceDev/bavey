@@ -6,7 +6,7 @@ import FlexStyled from "../../styles/components/Flex";
 import { PublicationStyle, PublicationWrapper, PublicationText } from "./styled";
 import PublicationFeedback from "../PublicationFeedback/PublicationFeedback";
 import Margin from "../../styles/components/Margin";
-import { IPublication, IUser } from "../../types/user";
+import { IPublication, IUser, IUserMini } from "../../types/user";
 import { useSetVoiceMutation } from "../../redux/api/postApi";
 
 import upVoiceIcon from '../../public/upVoiceIcon.svg';
@@ -16,7 +16,7 @@ import bookmarkIcon from '../../public/bookmarkIcon.svg';
 
 
 interface IPublicationProps {
-  user: IUser,
+  user: IUser|IUserMini,
   publication: IPublication
 }
 
