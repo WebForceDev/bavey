@@ -6,6 +6,13 @@ import { useNavigation } from '../providers/NavigationProviders';
 import Relation from '../components/Relation/Relation';
 import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
 import { useRelationsQuery } from '../redux/api/userApi';
+import NavigationSideBar from '../components/NavigationSideBar/NavigationSideBar';
+import NavigationLink from '../components/NavigationLink/NavigationLink';
+import Margin from '../styles/components/Margin';
+
+import BookmarkIcon from '../public/bookmarkIcon.svg';
+import FriendsIcon from '../public/friends.svg';
+import FriendRequestIcon from '../public/friendRequest.svg';
 
 
 const FriendsPage: NextPage = () => {
@@ -34,10 +41,14 @@ const FriendsPage: NextPage = () => {
          friends
         }
         </div>
-        <div>
-          <Link href="/friends">My friends</Link>
-          <Link href="/friendsRequests">My friend request</Link>
-        </div>
+        <NavigationSideBar>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+          </Margin>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='FriendsRequests' href='/friendsRequests' alt='friendsRequests' icon={FriendRequestIcon} />
+          </Margin>
+        </NavigationSideBar>
     </TwoColumnLayout>
   )
 }

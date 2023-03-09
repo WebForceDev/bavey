@@ -2,9 +2,17 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 
 import FriendRequestInside from '../components/FriendRequestInside/FriendRequestInside';
+import NavigationLink from '../components/NavigationLink/NavigationLink';
 import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
 import { useNavigation } from '../providers/NavigationProviders';
 import { useFriendRequestsQuery } from '../redux/api/friendrequestApi';
+import Margin from '../styles/components/Margin';
+import NavigationSideBar from '../components/NavigationSideBar/NavigationSideBar';
+
+import FriendsIcon from '../public/friends.svg';
+import FriendRequestIcon from '../public/friendRequest.svg';
+import InsideIcon from '../public/inside.svg';
+import OutSideIcon from '../public/outside.svg';
 
 
 const FriendsPage: NextPage = () => {
@@ -38,13 +46,22 @@ const FriendsPage: NextPage = () => {
           </>
         }
         </div>
-        <div>
-          <Link href="/friends">My friends</Link>
-          <Link href="/friendsRequests">My friend request</Link>
 
-          <Link href="#inside">inside</Link>
-          <Link href="#outside">outside</Link>
-        </div>
+        <NavigationSideBar>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+          </Margin>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='FriendsRequests' href='/friendsRequests' alt='friendsRequests' icon={FriendRequestIcon} />
+          </Margin>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='Inside' href='#inside' alt='inside' icon={InsideIcon} />
+          </Margin>
+          <Margin mg='20px 0 15px 0'>
+            <NavigationLink text='Outside' href='#outside' alt='outside' icon={OutSideIcon} />
+          </Margin>
+        </NavigationSideBar>
+
     </TwoColumnLayout>
   )
 }
