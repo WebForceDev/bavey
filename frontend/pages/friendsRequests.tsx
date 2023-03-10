@@ -45,6 +45,10 @@ const FriendsPage: NextPage = () => {
             </div>
           </>
         }
+        {
+          inside.length == 0 && outside.length == 0 && !isLoading &&
+          <h2>No friend requests</h2>
+        }
         </div>
 
         <NavigationSideBar>

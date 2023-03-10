@@ -38,6 +38,10 @@ const SavedPublicationPage: NextPage = () => {
             }
           </>
         }
+        {
+          data?.publications.length == 0 && !isLoading &&
+          <h2>No saved publication</h2>
+        }
         </div>
 
         <NavigationSideBar>

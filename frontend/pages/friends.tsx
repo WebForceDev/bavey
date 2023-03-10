@@ -40,6 +40,10 @@ const FriendsPage: NextPage = () => {
         {isLoading ? 'Loading' : 
          friends
         }
+        {
+          friends.length == 0 && !isLoading &&
+          <h2>No friends</h2>
+        }
         </div>
         <NavigationSideBar>
           <Margin mg='20px 0 15px 0'>
