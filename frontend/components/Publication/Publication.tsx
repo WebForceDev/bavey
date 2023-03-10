@@ -53,10 +53,10 @@ const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
                     <PublicationFeedback onclick={setUpvoice('down')} icon={downVoiceIcon} feedbackCount={ downVoices } />
                 </Margin>
                 <Margin mg="0 15px 0 0">
-                    <PublicationFeedback onclick={setUpvoice('book')} icon={commentIcon} feedbackCount={21} />
+                    <PublicationFeedback onclick={setUpvoice('bookmark')} icon={commentIcon} feedbackCount={21} />
                 </Margin>
               </FlexStyled>
-              <Image src={bookmarkIcon} alt="bookmark"/>
+              <Image src={bookmarkIcon} alt="bookmark" onClick={() => setUpvoice('bookmark')()} />
             </FlexStyled>
           </Margin>
         </PublicationWrapper>
