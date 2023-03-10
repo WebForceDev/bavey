@@ -39,6 +39,7 @@ export const postApi = createApi({
             }
           };
         },
+        invalidatesTags: ['Post']
     }),
 
     createPublication: builder.mutation<any, any>({
@@ -60,7 +61,8 @@ export const postApi = createApi({
         headers: {
           Authorization: `Token ${ localStorage.getItem('token') }`
         }
-      })
+      }),
+      providesTags: ['Post']
     }),
 
   }),
