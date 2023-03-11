@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { ThemeContext } from 'styled-components';
+import { useContext } from "react";
 
 import { useNavigation } from '../../providers/NavigationProviders';
 import TwoColumnLayout from '../../components/TwoColumnLayout/TwoColumnLayout';
@@ -16,6 +17,7 @@ import BookmarkVoiceIcon from '../../public/bookmarkIcon.svg';
 
 
 const SavedPublicationPage: NextPage = () => {
+  const theme = useContext(ThemeContext);
   const navigationContext = useNavigation();
   navigationContext?.setActivePage('Saved post')
 
@@ -46,13 +48,13 @@ const SavedPublicationPage: NextPage = () => {
 
         <NavigationSideBar>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Saved up' href='/saved/up' alt='up' icon={UpVoiceIcon} />
+            <NavigationLink text='Saved up' href='/saved/up' icon={<UpVoiceIcon fill={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Saved down' href='/saved/down' alt='down' icon={DownVoiceIcon} />
+            <NavigationLink text='Saved down' href='/saved/down' icon={<DownVoiceIcon fill={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Bookmark' href='/saved/bookmark' alt='bookmark' icon={BookmarkVoiceIcon} />
+            <NavigationLink text='Bookmark' href='/saved/bookmark' icon={<BookmarkVoiceIcon fill={theme.color.white} />} />
           </Margin>
         </NavigationSideBar>
 

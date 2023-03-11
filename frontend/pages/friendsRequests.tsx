@@ -1,5 +1,7 @@
 import type { NextPage } from 'next'
-import Link from 'next/link';
+import { ThemeContext } from 'styled-components';
+import { useContext } from "react";
+
 
 import FriendRequestInside from '../components/FriendRequestInside/FriendRequestInside';
 import NavigationLink from '../components/NavigationLink/NavigationLink';
@@ -16,6 +18,7 @@ import OutSideIcon from '../public/outside.svg';
 
 
 const FriendsPage: NextPage = () => {
+  const theme = useContext(ThemeContext);
   const { data, isLoading } = useFriendRequestsQuery();
   const navigationContext = useNavigation();
   navigationContext?.setActivePage('Friends')
@@ -53,16 +56,16 @@ const FriendsPage: NextPage = () => {
 
         <NavigationSideBar>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+            <NavigationLink text='Friends' href='/friends' icon={<FriendsIcon stroke={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='FriendsRequests' href='/friendsRequests' alt='friendsRequests' icon={FriendRequestIcon} />
+            <NavigationLink text='FriendsRequests' href='/friendsRequests' icon={<FriendRequestIcon stroke={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Inside' href='#inside' alt='inside' icon={InsideIcon} />
+            <NavigationLink text='Inside' href='#inside' icon={<InsideIcon fill={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Outside' href='#outside' alt='outside' icon={OutSideIcon} />
+            <NavigationLink text='Outside' href='#outside' icon={<OutSideIcon fill={theme.color.white} />} />
           </Margin>
         </NavigationSideBar>
 

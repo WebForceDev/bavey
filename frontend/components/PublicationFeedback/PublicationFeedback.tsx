@@ -1,21 +1,21 @@
 import React from "react";
-import Image from "next/image";
 
 import FlexStyled from "../../styles/components/Flex";
 import { TextAfterIcon } from "./styled";
 
 
 interface PublicationFeedbackProps {
-    icon: string,
+    icon: any,
     feedbackCount:any,
-    onclick:any
+    onclick:any,
+    isAcrive: boolean
 }
 
-const PublicationFeedback: React.FC<PublicationFeedbackProps> = ({icon, feedbackCount,onclick}) => {
+const PublicationFeedback: React.FC<PublicationFeedbackProps> = ({icon, feedbackCount, onclick, isAcrive}) => {
     return (
         <FlexStyled justifyContent="flex-start" alignItems="center" onClick={onclick}>
-            <Image src={ icon } alt="up voice"/>
-            <TextAfterIcon>{ feedbackCount }</TextAfterIcon>
+            { icon }
+            <TextAfterIcon isAcrive={isAcrive} >{ feedbackCount }</TextAfterIcon>
         </FlexStyled>
     )
 }

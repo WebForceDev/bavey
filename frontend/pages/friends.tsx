@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
-import Link from 'next/link';
 import { useRouter } from 'next/router'
+import { ThemeContext } from 'styled-components';
+import { useContext } from "react";
 
 import { useNavigation } from '../providers/NavigationProviders';
 import Relation from '../components/Relation/Relation';
@@ -10,12 +11,12 @@ import NavigationSideBar from '../components/NavigationSideBar/NavigationSideBar
 import NavigationLink from '../components/NavigationLink/NavigationLink';
 import Margin from '../styles/components/Margin';
 
-import BookmarkIcon from '../public/bookmarkIcon.svg';
 import FriendsIcon from '../public/friends.svg';
 import FriendRequestIcon from '../public/friendRequest.svg';
 
 
 const FriendsPage: NextPage = () => {
+  const theme = useContext(ThemeContext);
   const router = useRouter();
   const navigationContext = useNavigation();
   navigationContext?.setActivePage('Friends')
@@ -47,10 +48,10 @@ const FriendsPage: NextPage = () => {
         </div>
         <NavigationSideBar>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+            <NavigationLink text='Friends' href='/friends' icon={<FriendsIcon stroke={theme.color.white} />} />
           </Margin>
           <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='FriendsRequests' href='/friendsRequests' alt='friendsRequests' icon={FriendRequestIcon} />
+            <NavigationLink text='FriendsRequests' href='/friendsRequests' icon={<FriendRequestIcon stroke={theme.color.white} />} />
           </Margin>
         </NavigationSideBar>
     </TwoColumnLayout>

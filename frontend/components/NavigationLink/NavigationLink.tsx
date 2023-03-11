@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { NavigationLinkStyled, NavigationLinkTextStyled } from "./style";
@@ -9,14 +8,13 @@ interface INavigationLinkProps {
     href: string,
     text: string,
     icon: any,
-    alt: any,
 }
 
-const NavigationLink: React.FC<INavigationLinkProps> = ({ href, icon, alt, text }) => {
+const NavigationLink: React.FC<INavigationLinkProps> = ({ href, icon, text }) => {
     return (
         <Link href={href}>
             <NavigationLinkStyled>
-                <Image src={icon} alt={alt} />
+                { icon }
                 <NavigationLinkTextStyled>
                     { text }
                 </NavigationLinkTextStyled>

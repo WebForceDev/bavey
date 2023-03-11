@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState, useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 
 import { NavigationBlockStyled, NavigationBlockTitleStyled } from './style';
 import FlexStyled from '../../styles/components/Flex';
@@ -14,6 +13,7 @@ import BookmarkIcon from '../../public/bookmarkIcon.svg';
 
 
 const NavigationBlock: React.FC = () => {
+    const theme = useContext(ThemeContext);
     const [isOpen, setIsOpen] = useState(false);
     const navigationContext = useNavigation();
 
@@ -25,17 +25,17 @@ const NavigationBlock: React.FC = () => {
 
         <FlexStyled alignItems='center' justifyContent='space-between' >
             <NavigationBlockTitleStyled>{ navigationContext?.activePage }</NavigationBlockTitleStyled>
-            <Image src={Arrow} alt="arrow" />
+            <Arrow />
         </FlexStyled>
         
         { isOpen &&
             <>
                 <Margin mg='20px 0 15px 0'>
-                    <NavigationLink text='Friends' href='/friends' alt='friends' icon={FriendsIcon} />
+                    <NavigationLink text='Friends' href='/friends' icon={<FriendsIcon stroke={theme.color.white}  />} />
                 </Margin>
                 <Margin mg='0 0 15px 0'>
                     <div>
-                        <NavigationLink text='Saved' href='/saved/up' alt='saved' icon={BookmarkIcon} />
+                        <NavigationLink text='Saved' href='/saved/up' icon={<BookmarkIcon fill={theme.color.white}  />} />
                     </div>
                 </Margin>
             </>
