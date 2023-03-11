@@ -101,7 +101,7 @@ export const friendrequestApi = createApi({
         };
       },
       invalidatesTags: ['FriendRequest']
-  })
+    })
 
   }),
 });

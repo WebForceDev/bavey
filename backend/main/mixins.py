@@ -7,22 +7,22 @@ class SetVoiceMixin:
     def set_voice(self, request, slug):
         publication = get_object_or_404(Publication, slug=slug)
         user = User.objects.get(pk=request.user.pk)
-        voice = Voice.objects.filter(
+        voices = Voice.objects.filter(
             user=user,
             publication=publication
         )
-
-        if voice.count() > 0:
-            if voice.first().type == self.voice_type:
-                voice.first().delete()
+        for voice in voices:
+            if voice.type == self.voice_type:
+                voice.delete()
                 return None
-            else:
-                voice.first().delete()
-        Voice.objects.create(
-            user=user,
-            publication=publication,
-            type=self.voice_type
-        )
+
+        if self.voice_type != VoiceTypeChoices.BOOKMARK:
+            for voice in voices:
+                if voice.type == VoiceTypeChoices.UP or voice.type == VoiceTypeChoices.DOWN:
+                    voice.delete()
+            Voice.objects.create(publication=publication, user=user, type=self.voice_type)
+        else:
+            Voice.objects.create(publication=publication, user=user, type=self.voice_type)
 
 
     def get_voice_count(self, slug):
@@ -35,7 +35,12 @@ class SetVoiceMixin:
             publication=publication,
             type=VoiceTypeChoices.DOWN
         ).count()
+        bookmark_count = Voice.objects.filter(
+            publication=publication,
+            type=VoiceTypeChoices.BOOKMARK
+        ).count()
         return {
             'up_voice_count': up_voice_count,
             'down_voice_count': down_voice_count,
+            'bookmark_count': bookmark_count,
         }

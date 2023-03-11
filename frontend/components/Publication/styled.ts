@@ -8,7 +8,7 @@ export const PublicationStyle = styled.div`
 `;
 
 export const PublicationWrapper = styled.div`
-    max-width: 620px;
+    max-width: 90%;
     margin: auto;
 `;
 
@@ -16,7 +16,7 @@ export const PublicationText = styled.p`
     font-size: 18px;
     font-weight: 400;
     line-height: 1.5;
-    max-width: 620px;
+    max-width: 90%;
     margin: auto;
     margin-top: 8px;
 `;

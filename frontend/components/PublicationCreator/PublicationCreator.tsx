@@ -44,7 +44,7 @@ const PublicationCreator:React.FC<IPublicationCreatorProps> = ({setPublicationLi
             />
             <Margin mg="15px 0 0 0">
                 <FlexStyled alignItems="center" justifyContent="space-between" >
-                    <Image src={ImageSVG} alt="Photo" />
+                    <ImageSVG />
                     <PublicationButton value="Public" />
                 </FlexStyled>
             </Margin>

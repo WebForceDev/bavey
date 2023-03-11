@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import GlobalStyle from '../styles/globalStyle.styled';
 import { AuthProvider } from '../providers/AuthProviders';
+import { NavigationProvider } from '../providers/NavigationProviders';
 import { store } from '../redux/store';
 import theme from '../styles/theme';
 
@@ -14,9 +15,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <AuthProvider>
         <ThemeProvider theme={theme} >
-          <Normalize />
-          <GlobalStyle />
-          <Component {...pageProps} />
+          <NavigationProvider>
+            <Normalize />
+            <GlobalStyle />
+            <Component {...pageProps} />
+          </NavigationProvider>
         </ThemeProvider>
       </AuthProvider>
     </Provider>

@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Image from "next/image";
 import { useRouter } from 'next/router';
 import Link from "next/link";
 
@@ -36,7 +35,7 @@ const AuthLayout: React.FC = () => {
 
   return (
     <AuthLayoutStyled>
-      <Image src={BaveyLogo} alt="Bavey" width={150} height={150} />
+      <BaveyLogo />
       <FormTitle>Sign in to Bevyes</FormTitle>
       <AuthFormStyled onSubmit={submitHandler}>
         <Margin mg='0 0 20px 0'>
