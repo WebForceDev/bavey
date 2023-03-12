@@ -30,7 +30,7 @@ export const userApi = createApi({
       query: () => ({
         url: 'profile',
         headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         }
       })
     }),
@@ -39,7 +39,7 @@ export const userApi = createApi({
       query: (req) => ({
         url: `relations?slug=${req.slug}`,
         headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         } 
       }),
     }),

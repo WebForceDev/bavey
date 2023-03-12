@@ -6,7 +6,7 @@ import { NavigationLinkStyled, NavigationLinkTextStyled } from "./style";
 
 interface INavigationLinkProps {
     href: string,
-    text: string,
+    text: string|null|undefined,
     icon: any,
 }
 

@@ -25,7 +25,7 @@ const AuthLayout: React.FC = () => {
     event.preventDefault();
     login({username: username, password: password}).then((res:any) => {
       if (typeof res.data !== 'undefined') {
-        authContext?.setToken(res.data.token)
+        authContext?.setAuthUser(res.data.token, 'SergeyAverin')
         router.push({
           pathname: '/profile',
         });

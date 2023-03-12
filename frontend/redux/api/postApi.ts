@@ -35,7 +35,7 @@ export const postApi = createApi({
           return {
             url: `${req.slug}/set${req.voiceType}voice`,
             headers: {
-              Authorization: `Token ${ localStorage.getItem('token') }`
+              Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
             }
           };
         },
@@ -49,7 +49,7 @@ export const postApi = createApi({
           method: 'POST',
           body: data,
           headers: {
-            Authorization: `Token ${ localStorage.getItem('token') }`
+            Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
           }
         };
       },
@@ -59,7 +59,7 @@ export const postApi = createApi({
       query: (req) => ({
         url: `saved/${req.type_voice}`,
         headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         }
       }),
       providesTags: ['Post']

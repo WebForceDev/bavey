@@ -26,7 +26,7 @@ export const friendrequestApi = createApi({
       query: (req) => ({
         url: `profile/friendrequest`,
         headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         },
       }),
       providesTags: ['FriendRequest']
@@ -36,7 +36,7 @@ export const friendrequestApi = createApi({
       query: (req) => ({
         url: `relations/type/${req.slug}`,
         headers: {
-          Authorization: `Token ${ localStorage.getItem('token') }`
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         },
       }),
       providesTags: ['FriendRequest']
@@ -47,7 +47,7 @@ export const friendrequestApi = createApi({
           return {
             url: `friendrequest/accept/${req.slug}`,
             headers: {
-              Authorization: `Token ${ localStorage.getItem('token') }`
+              Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
             }
           };
         },
@@ -59,7 +59,7 @@ export const friendrequestApi = createApi({
           return {
             url: `friendrequest/reject/${req.slug}`,
             headers: {
-              Authorization: `Token ${ localStorage.getItem('token') }`
+              Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
             }
           };
         },
@@ -71,7 +71,7 @@ export const friendrequestApi = createApi({
         return {
           url: `friendrequest/create/${req.slug}`,
           headers: {
-            Authorization: `Token ${ localStorage.getItem('token') }`
+            Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
           },
           method: 'POST'
         };
@@ -84,7 +84,7 @@ export const friendrequestApi = createApi({
           return {
             url: `relations/unsubscribe/${req.slug}`,
             headers: {
-              Authorization: `Token ${ localStorage.getItem('token') }`
+              Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
             }
           };
         },
@@ -96,7 +96,7 @@ export const friendrequestApi = createApi({
         return {
           url: `relations/deletefriend/${req.slug}`,
           headers: {
-            Authorization: `Token ${ localStorage.getItem('token') }`
+            Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
           }
         };
       },
