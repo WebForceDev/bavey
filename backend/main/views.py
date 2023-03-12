@@ -153,6 +153,16 @@ class Profile(APIView):
         user.publications = publications
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status.HTTP_200_OK)
+    
+    def put(self, request):
+        user_serializer = UserSerializer(data=request.data, instance=request.user)
+
+        if user_serializer.is_valid():
+            user_serializer.update(validated_data=request.data, instance=request.user)
+            return Response(data=user_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class FriendRequestCreate(APIView): 
     permission_classes = (IsAuthenticated,)
