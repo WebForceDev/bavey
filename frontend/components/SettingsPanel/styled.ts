@@ -50,12 +50,14 @@ export const SettingsInput = styled.input`
     border-bottom: 2px solid ${props => props.theme.color.white};
     margin-top: 8px;
     width: 300px;
+    font-family: 'Poppins', sans-serif;
 `;
 
 export const SettingsLabel = styled.label`
     color: ${props => props.theme.color.white}; 
     font-size: 16px;
     display: block;
+    font-family: 'Poppins', sans-serif;
     margin-top: 30px;
 `;
 
