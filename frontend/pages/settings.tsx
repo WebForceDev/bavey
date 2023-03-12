@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react';
 
 import WrapperStyled from '../styles/components/Wrapper';
@@ -15,6 +16,7 @@ import { SubmitStyled } from '../styles/components/Submit';
 
 const ProfilePage: NextPage = () => {
     const [updateUser] = useUpdateUserMutation();
+    const router = useRouter();
     const [userSetting, setUserSetting] = useState({
         username: '',
         first_name: '',
@@ -28,7 +30,12 @@ const ProfilePage: NextPage = () => {
     const submitHandler = (event: React.SyntheticEvent) => {
         event.preventDefault();
         updateUser(userSetting);
-      };
+        router.push('/profile')
+    };
+
+    const clickCancelHandler = () => {
+        router.back()
+    };
 
     useEffect(()=>{
         if (!isLoading) {
@@ -52,7 +59,7 @@ const ProfilePage: NextPage = () => {
                 <form onSubmit={submitHandler}>
                     <Margin mg="100px 0 0 0">
                         <FlexStyled alignItems='center' justifyContent='space-between'>
-                            <ButtonStyled>Cancel</ButtonStyled>
+                            <ButtonStyled onClick={clickCancelHandler}>Cancel</ButtonStyled>
                             <SubmitStyled value="Applay" /> 
                         </FlexStyled>
                         <Margin mg="15px 0 0 0">
