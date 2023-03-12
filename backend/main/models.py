@@ -32,6 +32,8 @@ class User(AbstractUser):
         blank=True
     )
     slug = models.SlugField(unique=True, blank=True, null=True)
+    country = models.CharField(max_length=50, default='', blank=True)
+    city = models.CharField(max_length=50, default='', blank=True)
 
     def save(self, *args, **kwargs):
         slug_save(self)

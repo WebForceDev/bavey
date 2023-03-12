@@ -42,6 +42,21 @@ export const userApi = createApi({
           Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         } 
       }),
+      providesTags: ['User']
+    }),
+
+    updateUser: builder.mutation<any, any>({
+      query(data) {
+        return {
+          url: '/profile',
+          method: 'PUT',
+          body: data,
+          headers: {
+            Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
+          }
+        };
+      },
+      invalidatesTags: ['User']
     }),
 
   }),
@@ -49,5 +64,6 @@ export const userApi = createApi({
 
 export const {
   useProfileQuery,
-  useRelationsQuery
+  useRelationsQuery,
+  useUpdateUserMutation
 } = userApi;
