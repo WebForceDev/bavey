@@ -10,9 +10,9 @@ const SettingsPanel: React.FC = () => {
 
     const [userSetting, setUserSetting] = useState({
         username: '',
-        firstname: '',
-        lastname: '',
-        discription: '',
+        first_name: '',
+        last_name: '',
+        description: '',
         country: '',
         city: '',
     });
@@ -23,9 +23,9 @@ const SettingsPanel: React.FC = () => {
         if (!isLoading) {
             setUserSetting({
                 username: data.username,
-                firstname: data.firstname,
-                lastname: data.lastname,
-                discription: data.discription,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                description: data.description,
                 country: '',
                 city: '',
             })
@@ -52,16 +52,16 @@ const SettingsPanel: React.FC = () => {
                         value={userSetting.username} />
                     <SettingsLabel>First name</SettingsLabel>
                     <SettingsInput
-                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, firstname:event.target.value})}
-                        value={userSetting.firstname} />
+                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, first_name:event.target.value})}
+                        value={userSetting.first_name} />
                     <SettingsLabel>Last name</SettingsLabel>
                     <SettingsInput
-                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, lastname:event.target.value})}
-                        value={userSetting.lastname} />
+                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, last_name:event.target.value})}
+                        value={userSetting.last_name} />
                     <SettingsLabel>Discription</SettingsLabel>
                     <SettingsTextarea
-                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, discription:event.target.value})}
-                        value={userSetting.discription}></SettingsTextarea>
+                        onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, description:event.target.value})}
+                        value={userSetting.description}></SettingsTextarea>
                     <SettingsLabel>Cauntry</SettingsLabel>
                     <SettingsInput
                         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUserSetting({...userSetting, country:event.target.value})}
