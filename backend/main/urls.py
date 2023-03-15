@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('community/<slug:slug>', views.CommunityRetrieve.as_view()),
     path('community/<slug:slug>/statistic', views.CommunityStatistic.as_view()),
+    path('community/<slug:slug>/subscribe', views.CommunitySubscribe.as_view()),
 
     path('profile/friendrequest', views.UserFriendRequests.as_view()),
     path('profile', views.Profile.as_view()),

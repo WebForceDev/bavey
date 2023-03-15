@@ -319,3 +319,13 @@ class CommunityStatistic(APIView):
                     friens_subscribers_count += 1
             statistic['friens_subscribers_count'] = friens_subscribers_count
         return Response(statistic)
+
+
+class CommunitySubscribe(APIView):
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        if request.user in community.subscribers.all():
+            community.subscribers.remove(request.user)
+        else:
+            community.subscribers.add(request.user)
+        return Response({'subscribers_count': community.subscribers.count()})
