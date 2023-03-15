@@ -6,9 +6,9 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
+from .models import Publication, Community, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer
+from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer, CommunitySerializer
 
 
 # Retrieve user's informations and user's publications
@@ -293,3 +293,9 @@ class SavedPublication(APIView):
             publication.autor = User.objects.get(pk=publication.owner.pk)
 
         return Response({'publications': PublicationSerializer(publications, many=True).data})
+
+
+class CommunityRetrieve(RetrieveAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+    lookup_field = 'slug'

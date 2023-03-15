@@ -16,6 +16,8 @@ urlpatterns = [
     path('relations/deletefriend/<slug:slug>', views.RelationDeleteFriend.as_view()),
     path('relations/unsubscribe/<slug:slug>', views.RelationUnsubscribe.as_view()),
 
+    path('community/<slug:slug>', views.CommunityRetrieve.as_view()),
+
     path('profile/friendrequest', views.UserFriendRequests.as_view()),
     path('profile', views.Profile.as_view()),
 
