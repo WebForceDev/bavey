@@ -32,6 +32,16 @@ export const communityApi = createApi({
         providesTags: ['Community']
     }),
 
+    getSubscriptionsList: builder.query<ICommunityInfoRes, void>({
+      query: () => ({
+        url: `subscriptions`,
+        headers: {
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
+        },
+      }),
+      providesTags: ['CommunityStatistic']
+    }),
+
     getCommunityStatistic: builder.query<any, any>({
         query: (req) => ({
           url: `${req.slug}/statistic`,
@@ -72,4 +82,5 @@ export const {
     useGetCommunityStatisticQuery,
     useSubscribeToCommunityMutation,
     useIsCommunitySubscribeQuery,
+    useGetSubscriptionsListQuery,
 } = communityApi;
