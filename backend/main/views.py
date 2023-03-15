@@ -299,3 +299,23 @@ class CommunityRetrieve(RetrieveAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
     lookup_field = 'slug'
+
+
+class CommunityStatistic(APIView):
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        statistic = dict()
+        subscribers = community.subscribers.all()
+        statistic['subscribers_count'] = subscribers.count()
+        if request.user:
+            q1 = Q(from_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
+            q2 = Q(to_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
+            friends = Relationships.objects.filter(q1 | q2)
+            friens_subscribers_count = 0
+            for friend in friends:
+                condition_1 = friend.from_user in subscribers and friend.from_user != request.user
+                condition_2 = friend.to_user in subscribers and friend.to_user != request.user
+                if condition_1 or condition_2:
+                    friens_subscribers_count += 1
+            statistic['friens_subscribers_count'] = friens_subscribers_count
+        return Response(statistic)
