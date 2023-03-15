@@ -39,7 +39,7 @@ class User(AbstractUser):
         slug_save(self)
         super(User, self).save(*args, **kwargs)
 
-class Сommunity(models.Model):
+class Community(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(
         null=True,
@@ -53,7 +53,7 @@ class Сommunity(models.Model):
 
     def save(self, *args, **kwargs):
         slug_save(self)
-        super(Сommunity, self).save(*args, **kwargs)
+        super(Community, self).save(*args, **kwargs)
 
 
 class RelationshipsTypeChoices(models.TextChoices):
