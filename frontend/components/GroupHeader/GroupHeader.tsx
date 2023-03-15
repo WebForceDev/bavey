@@ -7,6 +7,7 @@ import WrapperStyled from "../../styles/components/Wrapper";
 import FlexStyled from "../../styles/components/Flex";
 import Margin from "../../styles/components/Margin";
 import { ICommunity } from "../../types/user";
+import { useSubscribeToCommunityMutation } from "../../redux/api/communityApi";
 
 import Avatar from '../../public/Avatar.png';
 
@@ -16,6 +17,7 @@ interface IGroupHeaderProps {
 }
 
 const GroupHeader: React.FC<IGroupHeaderProps> = ({ community }) => {
+    const [ subscribeToCommunity ] = useSubscribeToCommunityMutation();
     return (
         <>
             <GroupHeaderBackgroundStyled></GroupHeaderBackgroundStyled>
@@ -36,7 +38,7 @@ const GroupHeader: React.FC<IGroupHeaderProps> = ({ community }) => {
                         <FlexStyled justifyContent="flex-start" alignItems="flex-start">
                             <div>
                                 <Margin mg="0 0 10px 0">
-                                    <ButtonStyled>Subscribe</ButtonStyled>
+                                    <ButtonStyled onClick={() => subscribeToCommunity({slug: community.slug})}>Subscribe</ButtonStyled>
                                 </Margin>
                                 <Margin mg="15px 0 0 0">
                                     <ButtonStyled>Recommend</ButtonStyled>
