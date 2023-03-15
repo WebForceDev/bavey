@@ -42,6 +42,16 @@ export const communityApi = createApi({
         providesTags: ['CommunityStatistic']
     }),
 
+    isCommunitySubscribe: builder.query<any, any>({
+      query: (req) => ({
+        url: `${req.slug}/status`,
+        headers: {
+          Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
+        },
+      }),
+      providesTags: ['CommunityStatistic']
+    }),
+
     subscribeToCommunity: builder.mutation<any, any>({
         query(req) {
           return {
@@ -60,5 +70,6 @@ export const communityApi = createApi({
 export const {
     useGetCommunityInfoQuery,
     useGetCommunityStatisticQuery,
-    useSubscribeToCommunityMutation
+    useSubscribeToCommunityMutation,
+    useIsCommunitySubscribeQuery,
 } = communityApi;
