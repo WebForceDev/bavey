@@ -1,16 +1,21 @@
 import React from "react";
 import Image from "next/image";
 
-import  { GroupHeaderBackgroundStyled, GroupHeaderStyled, SubscribersStyled } from './styled';
+import  { GroupHeaderBackgroundStyled, GroupHeaderStyled } from './styled';
 import ButtonStyled from "../../styles/components/Button";
 import WrapperStyled from "../../styles/components/Wrapper";
 import FlexStyled from "../../styles/components/Flex";
 import Margin from "../../styles/components/Margin";
+import { ICommunity } from "../../types/user";
 
 import Avatar from '../../public/Avatar.png';
 
 
-const GroupHeader: React.FC = () => {
+interface IGroupHeaderProps {
+    community: ICommunity
+}
+
+const GroupHeader: React.FC<IGroupHeaderProps> = ({ community }) => {
     return (
         <>
             <GroupHeaderBackgroundStyled></GroupHeaderBackgroundStyled>
@@ -21,17 +26,14 @@ const GroupHeader: React.FC = () => {
                             <Image src={Avatar} alt='group' />
                             <div>
                                 <Margin mg="0 0 0 30px">
-                                    <h1>Group name</h1>
+                                    <h1>{ community.name }</h1>
                                     <p>
-                                        description
+                                        { community.description }
                                     </p>
                                 </Margin>
                             </div>
                         </FlexStyled>
                         <FlexStyled justifyContent="flex-start" alignItems="flex-start">
-                            <SubscribersStyled>
-                                2000 подписчиков
-                            </SubscribersStyled>
                             <div>
                                 <Margin mg="0 0 10px 0">
                                     <ButtonStyled>Subscribe</ButtonStyled>

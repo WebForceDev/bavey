@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IPublication } from '../../types/user';
 
+import { HYDRATE } from 'next-redux-wrapper';
+
 
 const BASE_URL = `http://194.58.107.140:8080`;
 
@@ -28,6 +30,13 @@ export const postApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/v1.0/publication/`,
   }),
+
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
+
   endpoints: (builder) => ({
 
     setVoice: builder.mutation<ISetVoiceResult, ISetVoiceArgs>({

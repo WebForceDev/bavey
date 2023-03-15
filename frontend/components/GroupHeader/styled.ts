@@ -12,8 +12,3 @@ export const GroupHeaderBackgroundStyled = styled.div`
     width: 100%;
     height: 180px;
 `;
-
-export const SubscribersStyled = styled.div`
-    font-size: 18px;
-    margin-right: 30px;
-`;
