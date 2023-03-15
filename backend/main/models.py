@@ -39,6 +39,22 @@ class User(AbstractUser):
         slug_save(self)
         super(User, self).save(*args, **kwargs)
 
+class Сommunity(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(
+        null=True,
+        blank=True
+    )
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    creation_date = models.DateField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='community_owner')
+    admins = models.ManyToManyField(User, related_name='admin')
+    subscribers = models.ManyToManyField(User, related_name='subscribers')
+
+    def save(self, *args, **kwargs):
+        slug_save(self)
+        super(Сommunity, self).save(*args, **kwargs)
+
 
 class RelationshipsTypeChoices(models.TextChoices):
     FRIEND = 'friend'
