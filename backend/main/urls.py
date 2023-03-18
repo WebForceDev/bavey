@@ -15,10 +15,12 @@ urlpatterns = [
     path('relations/type/<slug:slug>', views.RelationType.as_view()),
     path('relations/deletefriend/<slug:slug>', views.RelationDeleteFriend.as_view()),
     path('relations/unsubscribe/<slug:slug>', views.RelationUnsubscribe.as_view()),
-
+    
+    path('community/subscriptions', views.CommunitySubscriptions.as_view()),
     path('community/<slug:slug>', views.CommunityRetrieve.as_view()),
     path('community/<slug:slug>/statistic', views.CommunityStatistic.as_view()),
     path('community/<slug:slug>/subscribe', views.CommunitySubscribe.as_view()),
+    path('community/<slug:slug>/status', views.CommunitySubscribeStatus.as_view()),
 
     path('profile/friendrequest', views.UserFriendRequests.as_view()),
     path('profile', views.Profile.as_view()),

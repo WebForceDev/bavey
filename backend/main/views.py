@@ -6,7 +6,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import Publication, Community, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
+from .models import Publication, Community, WallTypeChoices, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
 from .mixins import SetVoiceMixin
 from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer, CommunitySerializer
 
@@ -106,6 +106,8 @@ class CreatePublication(APIView):
     def post(self, request):
         wall = get_object_or_404(User, slug=request.data['wall'])
         request.data['wall'] = wall.pk
+        request.data['wall_type'] = request.data['wall_typeCommunitySubscriptions']
+        WallTypeChoices
         serializer = PublicationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
@@ -307,7 +309,7 @@ class CommunityStatistic(APIView):
         statistic = dict()
         subscribers = community.subscribers.all()
         statistic['subscribers_count'] = subscribers.count()
-        if request.user:
+        if request.user.is_authenticated:
             q1 = Q(from_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
             q2 = Q(to_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
             friends = Relationships.objects.filter(q1 | q2)
@@ -322,6 +324,8 @@ class CommunityStatistic(APIView):
 
 
 class CommunitySubscribe(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, slug):
         community = get_object_or_404(Community, slug=slug)
         if request.user in community.subscribers.all():
@@ -329,3 +333,20 @@ class CommunitySubscribe(APIView):
         else:
             community.subscribers.add(request.user)
         return Response({'subscribers_count': community.subscribers.count()})
+
+
+class CommunitySubscribeStatus(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        return Response({'is_subscrive': request.user in community.subscribers.all()})
+
+
+class CommunitySubscriptions(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        communities = Community.objects.filter(subscribers=request.user)
+        communities_serializer = CommunitySerializer(communities, many=True)
+        return Response(data=communities_serializer.data, status=status.HTTP_200_OK)
