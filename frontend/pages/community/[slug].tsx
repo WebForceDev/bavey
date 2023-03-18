@@ -33,9 +33,7 @@ const CommunityPage: NextPage<ICommunityPageProps> = ({community}) => {
               { community.creation_date }
             </Board>
             <div>
-              <PublicationCreator>
-
-              </PublicationCreator>
+              <PublicationCreator wall={router.query.slug} wall_type="community" />
             </div>
             { !isLoading &&
             <Board title='Statistics'>

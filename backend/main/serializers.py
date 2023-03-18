@@ -41,7 +41,9 @@ class PublicationSerializer(serializers.ModelSerializer):
         fields = [
             'title',
             'slug',
-            'wall',
+            'wall_type',
+            'wall_user',
+            'wall_community',
             'up_voice',
             'down_voice',
             'publication_media',

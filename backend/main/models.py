@@ -87,12 +87,31 @@ class FriendRequest(models.Model):
     message = models.TextField()
 
 
+class WallTypeChoices(models.TextChoices):
+    USER = 'user'
+    COMMUNITY = 'community'
+
 class Publication(models.Model):
     title = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     slug = models.SlugField(unique=True, blank=True, null=True)
     # The wall is where the post is displayed
-    wall = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wall')
+    wall_type = models.CharField(
+        max_length=10,
+        choices=WallTypeChoices.choices)
+    
+    wall_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='wall_user',
+        null=True,
+        blank=True)
+    wall_community = models.ForeignKey(
+        Community,
+        on_delete=models.CASCADE,
+        related_name='wall_community',
+        null=True,
+        blank=True)
 
     def save(self, *args, **kwargs):
         slug_save(self)

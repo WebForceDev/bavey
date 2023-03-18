@@ -20,7 +20,7 @@ class UserRetrieve(RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()
         user = get_object_or_404(queryset, slug=self.kwargs['slug'])
-        publications = Publication.objects.filter(wall=user)
+        publications = Publication.objects.filter(wall_user=user, wall_type=WallTypeChoices.USER)
 
         for publication in publications:
             publication.up_voice = Voice.objects.filter(
@@ -104,10 +104,14 @@ class PublicationRetrieve(RetrieveAPIView):
 class CreatePublication(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
-        wall = get_object_or_404(User, slug=request.data['wall'])
-        request.data['wall'] = wall.pk
-        request.data['wall_type'] = request.data['wall_typeCommunitySubscriptions']
-        WallTypeChoices
+        print(request.data)
+        if request.data['wall_type'] == WallTypeChoices.USER:
+            wall = get_object_or_404(User, slug=request.data['wall'])
+            request.data['wall_user'] = wall.pk
+        elif request.data['wall_type'] == WallTypeChoices.COMMUNITY:
+            wall = get_object_or_404(Community, slug=request.data['wall'])
+            request.data['wall_community'] = wall.pk
+
         serializer = PublicationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
