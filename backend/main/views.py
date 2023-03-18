@@ -354,3 +354,13 @@ class CommunitySubscriptions(APIView):
         communities = Community.objects.filter(subscribers=request.user)
         communities_serializer = CommunitySerializer(communities, many=True)
         return Response(data=communities_serializer.data, status=status.HTTP_200_OK)
+
+
+class CommunityPublications(ListAPIView):
+    queryset = Publication.objects.all()
+    serializer_class = PublicationSerializer
+
+    def get_queryset(self):
+        wall = get_object_or_404(Community, slug=self.kwargs['slug'])
+        return Publication.objects.filter(wall_community=wall, wall_type=WallTypeChoices.COMMUNITY)
+ 
