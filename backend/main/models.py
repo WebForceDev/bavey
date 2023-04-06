@@ -112,6 +112,8 @@ class Publication(models.Model):
         related_name='wall_community',
         null=True,
         blank=True)
+    
+    creation_date = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         slug_save(self)

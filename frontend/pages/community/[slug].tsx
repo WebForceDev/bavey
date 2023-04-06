@@ -1,6 +1,7 @@
 import type { NextPage, GetServerSidePropsContext, GetServerSideProps } from 'next';
 import type { Store } from '../../redux/store';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import GroupHeader from '../../components/GroupHeader/GroupHeader';
 import ThreeColumnLayout from '../../components/ThreeColumnLayout/ThreeColumnLayout';
@@ -10,7 +11,8 @@ import Board from '../../components/Board/Board';
 import { wrapper } from '../../redux/store';
 import { ICommunity } from '../../types/user';
 import PublicationCreator from '../../components/PublicationCreator/PublicationCreator';
-import { useGetCommunityStatisticQuery } from '../../redux/api/communityApi'; 
+import Publication from '../../components/Publication/Publication';
+import { useGetCommunityStatisticQuery, useGetPulicationListQuery } from '../../redux/api/communityApi'; 
 import Margin from '../../styles/components/Margin';
 
 
@@ -22,28 +24,66 @@ interface ICommunityPageProps {
 const CommunityPage: NextPage<ICommunityPageProps> = ({community}) => {
   const router = useRouter();
   const navigationContext = useNavigation();
-  navigationContext?.setActivePage(router.query.slug);
-  const { isLoading, data } = useGetCommunityStatisticQuery({slug:router.query.slug})
+  const slug = router.query.slug
+  navigationContext?.setActivePage(slug);
+  const statistic = useGetCommunityStatisticQuery({slug: slug})
+
+  const [page, setPage] = useState(1);
+  const pulicationListQuery = useGetPulicationListQuery({slug: slug, offset: page, limit: 20});
+  const publications = pulicationListQuery.data?.results ?? [];
+  const [newPublications, setNewPublications] = useState([]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight;
+      if (scrolledToBottom && !pulicationListQuery.isFetching) {
+        console.log("Fetching more data...");
+        setPage(page + 1);
+      }
+    };
+
+    document.addEventListener("scroll", onScroll);
+
+    return function () {
+      document.removeEventListener("scroll", onScroll);
+    };
+  }, [page, pulicationListQuery.isFetching]);
 
   return (
     <>
         <GroupHeader community={community}></GroupHeader>
         <ThreeColumnLayout>
+          <div>
             <Board title='Creation date'>
               { community.creation_date }
             </Board>
+          </div>
+            
             <div>
-              <PublicationCreator wall={router.query.slug} wall_type="community" />
+              <PublicationCreator setPublicationList={setNewPublications} wall={slug} wall_type="community" />
+              {newPublications.map((publication) => (
+                <Margin mg='30px 0 0 0'  key={publication.slug}>
+                  <Publication publication={publication}></Publication>
+                </Margin>
+              ))}
+              { publications.map((publication) => (
+                <Margin mg='30px 0 0 0'  key={publication.slug}>
+                  <Publication publication={publication}></Publication>
+                </Margin>
+              ))}
             </div>
-            { !isLoading &&
-            <Board title='Statistics'>
-              <Margin mg='8px 0 0 0'>
-                Subscribers: { data.subscribers_count }
-              </Margin>
-              <Margin mg='8px 0 0 0'>
-                Friends subscribers: { data.friens_subscribers_count }
-              </Margin>
-            </Board>
+            { !statistic.isLoading &&
+              <div>
+                <Board title='Statistics'>
+                  <Margin mg='8px 0 0 0'>
+                    Subscribers: { statistic.data.subscribers_count }
+                  </Margin>
+                  <Margin mg='8px 0 0 0'>
+                    Friends subscribers: { statistic.data.friens_subscribers_count }
+                  </Margin>
+                </Board>
+              </div>
             }
         </ThreeColumnLayout>
     </>

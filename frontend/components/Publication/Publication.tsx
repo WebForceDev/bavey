@@ -16,11 +16,10 @@ import BookmarkIcon from '../../public/bookmarkIcon.svg';
 
 
 interface IPublicationProps {
-  user: IUser|IUserMini,
   publication: IPublication
 }
 
-const Publication: React.FC<IPublicationProps> = ({user, publication}) => {
+const Publication: React.FC<IPublicationProps> = ({publication}) => {
   const theme = useContext(ThemeContext)
   const [setVoice] = useSetVoiceMutation();
   const [upVoices, setUpVoices]= useState(publication.up_voice.length);

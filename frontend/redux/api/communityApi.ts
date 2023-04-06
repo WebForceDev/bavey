@@ -12,7 +12,7 @@ interface ICommunityInfoRes {
 
 export const communityApi = createApi({
   reducerPath: 'communityApi',
-  tagTypes: ['Community', 'CommunityStatistic'],
+  tagTypes: ['Community', 'CommunityStatistic', 'Publication'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/v1.0/community/`,
   }),
@@ -74,6 +74,25 @@ export const communityApi = createApi({
         invalidatesTags: ['CommunityStatistic']
     }),
 
+    getPulicationList: builder.query<string[], any>({
+      query: (req) => ({
+        url: `${req.slug}/publications?offset=${req.offset}&limit=${req.limit}`,
+      }),
+      // Only have one cache entry because the arg always maps to one string
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName
+      },
+      // Always merge incoming data to the cache entry
+      merge: (currentCache, newItems) => {
+        currentCache.results.push(...newItems.results);
+      },
+      // Refetch when the page arg changes
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg
+      },
+      providesTags: ['Publication']
+    }),
+
   }),
 });
 
@@ -83,4 +102,5 @@ export const {
     useSubscribeToCommunityMutation,
     useIsCommunitySubscribeQuery,
     useGetSubscriptionsListQuery,
+    useGetPulicationListQuery
 } = communityApi;

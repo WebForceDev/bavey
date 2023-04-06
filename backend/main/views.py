@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import LimitOffsetPagination
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
@@ -356,11 +357,22 @@ class CommunitySubscriptions(APIView):
         return Response(data=communities_serializer.data, status=status.HTTP_200_OK)
 
 
-class CommunityPublications(ListAPIView):
-    queryset = Publication.objects.all()
-    serializer_class = PublicationSerializer
+class CommunityPublications(APIView):
+    def get(self, request, slug):
+        wall = get_object_or_404(Community, slug=slug)
+        publications = Publication.objects.filter(wall_community=wall, wall_type=WallTypeChoices.COMMUNITY)
+        paginator = LimitOffsetPagination()
+        result_page = paginator.paginate_queryset(publications, request)
+        for publication in result_page:
+            publication.up_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.UP,
+                publication=publication)
+            publication.down_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.DOWN,
+                publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
+            publication.autor = User.objects.get(pk=publication.owner.pk)
 
-    def get_queryset(self):
-        wall = get_object_or_404(Community, slug=self.kwargs['slug'])
-        return Publication.objects.filter(wall_community=wall, wall_type=WallTypeChoices.COMMUNITY)
- 
+        serializer = PublicationSerializer(result_page, many=True, context={'request':request})
+        response = Response({'results':serializer.data}, status=status.HTTP_200_OK)
+        return response
