@@ -10,6 +10,7 @@ import NavigationLink from '../NavigationLink/NavigationLink';
 import Arrow from "../../public/arrow.svg";
 import FriendsIcon from '../../public/friends.svg';
 import BookmarkIcon from '../../public/bookmarkIcon.svg';
+import CommunityIcon from '../../public/communityIcon.svg';
 
 
 const NavigationBlock: React.FC = () => {
@@ -32,6 +33,11 @@ const NavigationBlock: React.FC = () => {
             <>
                 <Margin mg='20px 0 15px 0'>
                     <NavigationLink text='Friends' href='/friends' icon={<FriendsIcon stroke={theme.color.white}  />} />
+                </Margin>
+                <Margin mg='0 0 15px 0'>
+                    <div>
+                        <NavigationLink text='Subscriptions' href='/subscriptions' icon={<CommunityIcon fill={theme.color.white}  />} />
+                    </div>
                 </Margin>
                 <Margin mg='0 0 15px 0'>
                     <div>
