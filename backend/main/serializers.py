@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from main.models import Publication, User, Voice, PublicationMedia, Relationships, FriendRequest
+from main.models import Publication, User, Voice, PublicationMedia, Relationships, FriendRequest, Community
 
 
 class VoiceSerializer(serializers.ModelSerializer):
@@ -41,7 +41,9 @@ class PublicationSerializer(serializers.ModelSerializer):
         fields = [
             'title',
             'slug',
-            'wall',
+            'wall_type',
+            'wall_user',
+            'wall_community',
             'up_voice',
             'down_voice',
             'publication_media',
@@ -85,3 +87,9 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendRequest
         fields = ['sender', 'recipient', 'message']
+
+
+class CommunitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Community
+        fields = ['name', 'description', 'slug', 'creation_date']

@@ -3,12 +3,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import LimitOffsetPagination
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from .models import Publication, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
+from .models import Publication, Community, WallTypeChoices, User, VoiceTypeChoices, Voice, PublicationMedia, Relationships, FriendRequest, RelationshipsTypeChoices
 from .mixins import SetVoiceMixin
-from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer
+from .serializers import PublicationSerializer, UserSerializer, RelationshipsSerializer, FriendRequestSerializer, CommunitySerializer
 
 
 # Retrieve user's informations and user's publications
@@ -20,7 +21,7 @@ class UserRetrieve(RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()
         user = get_object_or_404(queryset, slug=self.kwargs['slug'])
-        publications = Publication.objects.filter(wall=user)
+        publications = Publication.objects.filter(wall_user=user, wall_type=WallTypeChoices.USER)
 
         for publication in publications:
             publication.up_voice = Voice.objects.filter(
@@ -104,8 +105,14 @@ class PublicationRetrieve(RetrieveAPIView):
 class CreatePublication(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
-        wall = get_object_or_404(User, slug=request.data['wall'])
-        request.data['wall'] = wall.pk
+        print(request.data)
+        if request.data['wall_type'] == WallTypeChoices.USER:
+            wall = get_object_or_404(User, slug=request.data['wall'])
+            request.data['wall_user'] = wall.pk
+        elif request.data['wall_type'] == WallTypeChoices.COMMUNITY:
+            wall = get_object_or_404(Community, slug=request.data['wall'])
+            request.data['wall_community'] = wall.pk
+
         serializer = PublicationSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
@@ -293,3 +300,79 @@ class SavedPublication(APIView):
             publication.autor = User.objects.get(pk=publication.owner.pk)
 
         return Response({'publications': PublicationSerializer(publications, many=True).data})
+
+
+class CommunityRetrieve(RetrieveAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+    lookup_field = 'slug'
+
+
+class CommunityStatistic(APIView):
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        statistic = dict()
+        subscribers = community.subscribers.all()
+        statistic['subscribers_count'] = subscribers.count()
+        if request.user.is_authenticated:
+            q1 = Q(from_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
+            q2 = Q(to_user=request.user, relationships_type=RelationshipsTypeChoices.FRIEND)
+            friends = Relationships.objects.filter(q1 | q2)
+            friens_subscribers_count = 0
+            for friend in friends:
+                condition_1 = friend.from_user in subscribers and friend.from_user != request.user
+                condition_2 = friend.to_user in subscribers and friend.to_user != request.user
+                if condition_1 or condition_2:
+                    friens_subscribers_count += 1
+            statistic['friens_subscribers_count'] = friens_subscribers_count
+        return Response(statistic)
+
+
+class CommunitySubscribe(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        if request.user in community.subscribers.all():
+            community.subscribers.remove(request.user)
+        else:
+            community.subscribers.add(request.user)
+        return Response({'subscribers_count': community.subscribers.count()})
+
+
+class CommunitySubscribeStatus(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, slug):
+        community = get_object_or_404(Community, slug=slug)
+        return Response({'is_subscrive': request.user in community.subscribers.all()})
+
+
+class CommunitySubscriptions(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        communities = Community.objects.filter(subscribers=request.user)
+        communities_serializer = CommunitySerializer(communities, many=True)
+        return Response(data=communities_serializer.data, status=status.HTTP_200_OK)
+
+
+class CommunityPublications(APIView):
+    def get(self, request, slug):
+        wall = get_object_or_404(Community, slug=slug)
+        publications = Publication.objects.filter(wall_community=wall, wall_type=WallTypeChoices.COMMUNITY)
+        paginator = LimitOffsetPagination()
+        result_page = paginator.paginate_queryset(publications, request)
+        for publication in result_page:
+            publication.up_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.UP,
+                publication=publication)
+            publication.down_voice = Voice.objects.filter(
+                type=VoiceTypeChoices.DOWN,
+                publication=publication)
+            publication.publication_media = PublicationMedia.objects.filter(publication=publication)
+            publication.autor = User.objects.get(pk=publication.owner.pk)
+
+        serializer = PublicationSerializer(result_page, many=True, context={'request':request})
+        response = Response({'results':serializer.data}, status=status.HTTP_200_OK)
+        return response

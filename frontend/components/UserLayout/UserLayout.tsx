@@ -62,7 +62,7 @@ const UserLayout: React.FC<IUserLayoutProps> = ({ user, children }) => {
 
               <div>
                 <Margin mg='0 0 30px 0'>
-                  <PublicationCreator setPublicationList={setPublicationList} wall={user.slug} />
+                  <PublicationCreator setPublicationList={setPublicationList} wall={user.slug} wall_type="user" />
                 </Margin>
                   { publications.reverse() }  
               </div>

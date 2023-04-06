@@ -33,3 +33,10 @@ export interface IFriendRequest {
     recipient: IUser,
     message: string
 };
+
+export interface ICommunity {
+    name: string,
+    slug: string,
+    description: string,
+    creation_date: string
+};

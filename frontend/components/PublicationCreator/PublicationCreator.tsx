@@ -12,26 +12,30 @@ import ImageSVG from "../../public/image.svg";
 
 interface IPublicationCreatorProps {
     setPublicationList: Function,
-    wall: string
+    wall: string,
+    wall_type: string,
 }
 
-const PublicationCreator:React.FC<IPublicationCreatorProps> = ({setPublicationList, wall}) => {
+const PublicationCreator:React.FC<IPublicationCreatorProps> = ({wall, setPublicationList, wall_type}) => {
     const [inputValue, setInputValues] = useState('');
     const [createPublication, result] = useCreatePublicationMutation();
 
     const submitHandler = async (event: React.SyntheticEvent) => {
         event.preventDefault();
+
         if (inputValue != '') {
             const req = createPublication({
                 title: inputValue,
-                wall
+                wall,
+                wall_type
             });
             const data = await req;
-
+            
             setPublicationList((prevState) => {
                 setInputValues('');
-                return [...prevState, data.data]
+                return [data.data, ...prevState]
             });
+            
         }
     };
 

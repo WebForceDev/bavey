@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IPublication } from '../../types/user';
 
+import { HYDRATE } from 'next-redux-wrapper';
+
 
 const BASE_URL = `http://194.58.107.140:8080`;
 
@@ -24,10 +26,17 @@ interface ISavedResult {
 
 export const postApi = createApi({
   reducerPath: 'postApi',
-  tagTypes: ['Post'],
+  tagTypes: ['Publication'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/v1.0/publication/`,
   }),
+
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
+
   endpoints: (builder) => ({
 
     setVoice: builder.mutation<ISetVoiceResult, ISetVoiceArgs>({
@@ -39,7 +48,7 @@ export const postApi = createApi({
             }
           };
         },
-        invalidatesTags: ['Post']
+        invalidatesTags: ['Publication']
     }),
 
     createPublication: builder.mutation<any, any>({
@@ -51,8 +60,9 @@ export const postApi = createApi({
           headers: {
             Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
           }
-        };
+        }
       },
+      invalidatesTags: ['Publication']
     }),
 
     savedPublication: builder.query<ISavedResult, ISavedArgs>({
@@ -62,7 +72,7 @@ export const postApi = createApi({
           Authorization: `Token ${ JSON.parse(localStorage.getItem('authUser')).token }`
         }
       }),
-      providesTags: ['Post']
+      providesTags: ['Publication']
     }),
 
   }),

@@ -39,6 +39,22 @@ class User(AbstractUser):
         slug_save(self)
         super(User, self).save(*args, **kwargs)
 
+class Community(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField(
+        null=True,
+        blank=True
+    )
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    creation_date = models.DateField(auto_now_add=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='community_owner')
+    admins = models.ManyToManyField(User, related_name='admin')
+    subscribers = models.ManyToManyField(User, related_name='subscribers')
+
+    def save(self, *args, **kwargs):
+        slug_save(self)
+        super(Community, self).save(*args, **kwargs)
+
 
 class RelationshipsTypeChoices(models.TextChoices):
     FRIEND = 'friend'
@@ -71,12 +87,33 @@ class FriendRequest(models.Model):
     message = models.TextField()
 
 
+class WallTypeChoices(models.TextChoices):
+    USER = 'user'
+    COMMUNITY = 'community'
+
 class Publication(models.Model):
     title = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     slug = models.SlugField(unique=True, blank=True, null=True)
     # The wall is where the post is displayed
-    wall = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wall')
+    wall_type = models.CharField(
+        max_length=10,
+        choices=WallTypeChoices.choices)
+    
+    wall_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='wall_user',
+        null=True,
+        blank=True)
+    wall_community = models.ForeignKey(
+        Community,
+        on_delete=models.CASCADE,
+        related_name='wall_community',
+        null=True,
+        blank=True)
+    
+    creation_date = models.DateField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         slug_save(self)
