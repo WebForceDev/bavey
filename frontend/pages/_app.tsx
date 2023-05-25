@@ -29,4 +29,5 @@ function MyApp({ Component, ...rest  }: AppProps) {
   )
 }
 
+
 export default wrapper.withRedux(MyApp);

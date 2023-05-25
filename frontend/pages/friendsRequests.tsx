@@ -21,7 +21,6 @@ const FriendRequestsPage: NextPage = () => {
     outside = data.outside;
     inside = data.inside;
   }
-
   return (
     <>
       <Header />

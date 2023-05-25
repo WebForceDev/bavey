@@ -18,7 +18,6 @@ interface IUserPageProps {
   publications: any,
   friends: any,
 }
-
 const UserPage: NextPage<IUserPageProps> = ({ user, publications, friends }) => {
   return (
     <>

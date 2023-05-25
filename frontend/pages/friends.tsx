@@ -23,7 +23,6 @@ const FriendsPage: NextPage = () => {
   if (data) {
     friends = data.friends;
   }
-
   return (
     <>
       <Header />

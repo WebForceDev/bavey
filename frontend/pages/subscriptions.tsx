@@ -11,7 +11,6 @@ const community = {
     description: 'string',
     creation_date: 'string'
 }
-
 const SubsctiptionPage: NextPage = () => {
   return (
     <>

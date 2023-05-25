@@ -19,6 +19,7 @@ const LogoutPage: NextPage = () => {
   return (
     <div>
       
+      
     </div>
   )
 }
