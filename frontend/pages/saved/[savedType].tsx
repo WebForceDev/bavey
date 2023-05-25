@@ -25,4 +25,5 @@ const SavedPublicationPage: NextPage = () => {
   )
 };
 
+
 export default withAuth(SavedPublicationPage);
