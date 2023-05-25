@@ -1,13 +1,8 @@
 import type { NextPage, GetServerSidePropsContext } from 'next'
 
-import Publication from '../../components/Publication/Publication';
-import Board from '../../components/Board/Board';
-import UserMiniTitle from '../../components/UserMiniTitle/UserMiniTitle';
-import BaseLayout from '../../components/BaseLayout/BaseLayout';
-import ContentGrid from '../../styles/components/ContentGrid';
-import Margin from '../../styles/components/Margin';
-import ProfileHeader from '../../components/ProfileHeader/ProfileHeader';
-import WrapperStyled from "../../styles/components/Wrapper"
+import UserLayout from '../../components/UserLayout/UserLayout';
+import UserHeader from '../../components/UserHeader/UserHeader';
+import { useNavigation } from '../../providers/NavigationProviders';
 import { IUser } from '../../types/user';
 
 
@@ -16,66 +11,12 @@ interface IUserPageProps {
 }
 
 const UserPage: NextPage<IUserPageProps> = ({user}) => {
-  const publications = user.publications.map((publication) => (
-      <Margin mg='0 0 30px 0' key={publication.slug}>
-        <Publication publication={publication} user={user} />
-      </Margin>
-  ));
-
+  const navigationContext = useNavigation();
+  navigationContext?.setActivePage(user.slug)
   return (
-    <BaseLayout>
-      <ProfileHeader user={ user } />
-      <WrapperStyled>
-        <Margin mg='59px 0 0 0'>
-          <ContentGrid>
-              <div>
-                <Margin mg='0 0 15px 0'>
-                  <Board>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user} />
-                    </Margin>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
-                    </Margin>
-                    <Margin mg='8px 0 0 0'>
-                      <UserMiniTitle user={user}  />
-                    </Margin>
-                  </Board>
-                </Margin>
-                <Board>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                </Board>
-              </div>
-
-              <div>
-                  { publications }  
-              </div>
-
-              <div>
-                <Board>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                  <Margin mg='8px 0 0 0'>
-                    <UserMiniTitle user={user}  />
-                  </Margin>
-                </Board>
-              </div>
-          </ContentGrid>
-        </Margin>
-      </WrapperStyled>
-    </BaseLayout>
+    <UserLayout user={ user }>
+      <UserHeader user={ user } />
+    </UserLayout>
   )
 }
 
@@ -83,10 +24,10 @@ export default UserPage;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const slug = context.query.slug;
-  const response = await fetch(
+  const responseUserInfo = await fetch(
     `http://${process.env.HOST}:${process.env.BACKEND_PORT}/api/v1.0/user/${slug}`
   );
-  const user:IUser = await response.json();
+  const user:IUser = await responseUserInfo.json();
 
   return {
     props: { user }

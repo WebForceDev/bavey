@@ -1,8 +1,14 @@
+export interface IUserMini {
+    username:string,
+    slug:string
+}
+
 export interface IPublication {
     title: string,
     slug: string,
     up_voice: [{ user:number }],
-    down_voice: [{ user:number }]
+    down_voice: [{ user:number }],
+    autor: IUserMini
 }
 
 export interface IUser {
@@ -15,3 +21,22 @@ export interface IUser {
     last_name: string,
     publications:[IPublication]
 }
+
+export interface IRelation  {
+    from_user: IUser,
+    to_user: IUser,
+    relationships_type: string
+}
+
+export interface IFriendRequest {
+    sender: IUser,
+    recipient: IUser,
+    message: string
+};
+
+export interface ICommunity {
+    name: string,
+    slug: string,
+    description: string,
+    creation_date: string
+};
