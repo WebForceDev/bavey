@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
-import Link from 'next/link'
 
-import AuthLayout from '../components/AuthLayout/AuthLayout'
+import { LoginForm } from '@features/login'
+
 
 
 const LoginPage: NextPage = () => {
   return (
-    <AuthLayout />
+    <LoginForm />
   )
 }
 

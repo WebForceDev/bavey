@@ -1,44 +1,41 @@
 import type { NextPage } from 'next'
 
-import { useNavigation } from '../providers/NavigationProviders';
-import { useGetSubscriptionsListQuery } from '../redux/api/communityApi';
-import SubscriptionCommunity from '../components/SubscriptionCommunity/SubscriptionCommunity';
-import BaseLayout from '../components/BaseLayout/BaseLayout';
-import WrapperStyled from '../styles/components/Wrapper';
-import Margin from '../styles/components/Margin';
+import { Wrapper, TwoColumnGrid, Margin } from '@shared/ui';
+import { Header } from '@widgets/header';
+import { Subscription } from '@entities/community';
+import { withAuth } from '@entities/viewer';
 
 
-const LogoutPage: NextPage = () => {
-  const navigation = useNavigation();
-  const { isLoading, data } = useGetSubscriptionsListQuery();
-  navigation?.setActivePage('Subscriptions')
-  
-  let subscriptionsCommunities: any[] = [];
-  if (data)  {
-    console.log(data)
-    subscriptionsCommunities = data.map((community) => (
-       <SubscriptionCommunity community={community} key={community.slug} />
-    ));
-  }
-
-  return (
-    <BaseLayout>
-        <WrapperStyled>
-            <Margin mg="90px 0 0 0">
-                { !isLoading &&
-                    <div>
-                        { subscriptionsCommunities }
-                    </div>
-                }
-                { !isLoading && data.length == 0 &&
-                    <h2>
-                        No subscriptions
-                    </h2>
-                }
-            </Margin>
-        </WrapperStyled>
-    </BaseLayout>
-  )
+const community = {
+    title: 'string',
+    description: 'string',
+    creation_date: 'string'
 }
+const SubsctiptionPage: NextPage = () => {
+  return (
+    <>
+      <Header />
+      <Margin mt={100}>
+        <Wrapper>
+            <div>
+              <Subscription community={community} />
+              <Margin mt={30}>
+                 <Subscription community={community} />
+              </Margin>
+              <Margin mt={30}>
+                 <Subscription community={community} />
+              </Margin>
+              <Margin mt={30}>
+                 <Subscription community={community} />
+              </Margin>
+              <Margin mt={30}>
+                 <Subscription community={community} />
+              </Margin>
+            </div>
+        </Wrapper>
+      </Margin>
+    </>
+  )
+};
 
-export default LogoutPage;
+export default withAuth(SubsctiptionPage);

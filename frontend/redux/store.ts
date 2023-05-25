@@ -1,17 +1,18 @@
 import { configureStore, AnyAction, combineReducers, Action, ThunkAction } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 
-import { authApi } from './api/authApi';
-import { userApi } from './api/userApi';
 import { postApi } from './api/postApi';
 import { friendrequestApi } from './api/friendrequestApi';
 import { communityApi } from './api/communityApi';
 
+import { userApi } from '@entities/User';
+import { viewerApi } from '@entities/viewer';
+
 
 const combinedReducer = combineReducers({
-  [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [postApi.reducerPath]: postApi.reducer,
+  [viewerApi.reducerPath]: viewerApi.reducer,
   [friendrequestApi.reducerPath]: friendrequestApi.reducer,
   [communityApi.reducerPath]: communityApi.reducer,
 });
@@ -34,8 +35,8 @@ export const makeStore = () =>
     devTools: process.env.NODE_ENV === 'development',
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({}).concat([
-        authApi.middleware,
         userApi.middleware,
+        viewerApi.middleware,
         postApi.middleware,
         friendrequestApi.middleware,
         communityApi.middleware,

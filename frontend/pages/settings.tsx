@@ -13,7 +13,6 @@ import { useProfileQuery, useUpdateUserMutation } from '../redux/api/userApi';
 import { SubmitStyled } from '../styles/components/Submit';
 
 
-
 const ProfilePage: NextPage = () => {
     const [updateUser] = useUpdateUserMutation();
     const router = useRouter();
