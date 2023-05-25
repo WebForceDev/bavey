@@ -1,2 +1,2 @@
 export { Relation } from './ui/Relation';
-export { useGetRelationQuery, relationApi } from './api/relationApi';
+export { useGetRelationQuery, useGetRelationForUserQuery, relationApi } from './api/relationApi';

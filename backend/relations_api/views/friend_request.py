@@ -16,7 +16,7 @@ class FriendRequestListCreate(APIView):
         user = request.user
         data = friend_request_service.get_friend_requests_serialized(user)
         return Response(data, status=status.HTTP_200_OK)
-    
+
     def post(self, request):
         friend_request_service = FriendRequestService()
         user_blog_service = UserBlogService()
@@ -26,7 +26,7 @@ class FriendRequestListCreate(APIView):
             request.user,
             recipient_user,
             request.data['message'])
-        
+
         return Response(FriendRequestSerializer(friend_request).data, status.HTTP_201_CREATED)
 
 

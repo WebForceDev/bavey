@@ -9,10 +9,11 @@ import photo from '@public/Avatar.png';
 
 
 interface IRelation {
-    username:string
+    username:string,
+    removeFriendButtonSlot: React.ReactNode
 }
 
-export const Relation: React.FC<IRelation> = ({ username }) => {
+export const Relation: React.FC<IRelation> = ({ username, removeFriendButtonSlot }) => {
     return (
         <RelationStyled>
             <Image
@@ -29,9 +30,7 @@ export const Relation: React.FC<IRelation> = ({ username }) => {
                     <Link href={`/user/${username}/sendmessage`}>Send message</Link>
                 </UserSendMessage>
               <Margin mt={10}>
-                    <Button>
-                        Remove friend
-                    </Button>
+                    { removeFriendButtonSlot }
               </Margin>
             </UserInfo>
         </RelationStyled>

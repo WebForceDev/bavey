@@ -8,12 +8,21 @@ export const relationApi = baseApi.injectEndpoints({
     getRelation: builder.query<IRelations, string>({
       query: (username) => ({
         url: `relations_api/relations?username=${username}`
-      })
+      }),
+      providesTags: ['Relation']
+    }),
+
+    getRelationForUser: builder.query<string, string>({
+      query: (username) => ({
+        url: `relations_api/relations/${username}`
+      }),
+      providesTags: ['Relation']
     }),
     
   })
 })
 
 export const {
-  useGetRelationQuery
+  useGetRelationQuery,
+  useGetRelationForUserQuery,
 } = relationApi;

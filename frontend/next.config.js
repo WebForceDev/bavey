@@ -24,6 +24,10 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    domains: [process.env['IMAGE_SERVER'], 'localhost'],
+    loader: 'custom'
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
