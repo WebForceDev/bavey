@@ -8,7 +8,12 @@ class User(AbstractUser):
     description = models.TextField(
         "Description in profile header", null=True, blank=True
     )
-    avatar = models.ImageField(upload_to="user/avatars", null=True, blank=True)
+    avatar = models.ImageField(
+        upload_to="user/avatars",
+        null=True,
+        blank=True,
+        default='user/avatars/default_avatar.png'
+    )
     # header_image is image from user page
     header_image = models.ImageField(
         upload_to="user/header_images", null=True, blank=True

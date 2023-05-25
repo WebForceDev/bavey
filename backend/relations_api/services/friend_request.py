@@ -91,10 +91,10 @@ class FriendRequestService:
         outside = self.get_outside_friend_request(user)
         inside = self.get_inside_friend_request(user)
 
-        outside_serializer = FriendRequestSerializer(outside, many=True)
-        inside_serializer = FriendRequestSerializer(inside, many=True)
+        inside_serializer = FriendRequestSerializer(outside, many=True)
+        outside_serializer = FriendRequestSerializer(inside, many=True)
 
         return {
-            "outside": outside_serializer.data,
             "inside": inside_serializer.data,
+            "outside": outside_serializer.data,
         }

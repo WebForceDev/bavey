@@ -10,4 +10,4 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FriendRequest
-        fields = ['sender', 'recipient', 'message']
+        fields = ['sender', 'recipient', 'message', 'pk']

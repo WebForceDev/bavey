@@ -6,10 +6,13 @@ from django.shortcuts import get_object_or_404
 
 from blog_api.models import User
 from ..services.relations import RelationsService
+from ..services.friend_request import FriendRequestService
+from core.permission import IsAuthenticatedOrReadOnly
+from relations_api.models import FriendRequest
 
 
 class RelationsList(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     relations_service = RelationsService()
 
     def get(self, request):
@@ -24,7 +27,7 @@ class RelationsList(APIView):
 
 
 class RelationshipView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
     relations_service = RelationsService()
 
     def get(self, request, username):
@@ -61,6 +64,13 @@ class RelationUnsubscribe(APIView):
         friend = get_object_or_404(User, username=username)
         user = request.user
 
+        friend_request = FriendRequest.objects.filter(
+            sender=user,
+            recipient=friend
+        )
+        if len(friend_request) > 0:
+            friend_request.delete()
+        
         self.relations_service.remove_subscribe(user, friend)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -8,13 +8,13 @@ from rest_framework.exceptions import ValidationError
 from auth_api.serializers import UserSerializer
 from blog_api.services.user_blog import UserBlogService
 from blog_api.services.publications import PublicationService
+from blog_api.models import Publication, Subscription
 from ..serializers import PublicationSerializer
-from core.permission import IsProfileOrReadOnly
+from core.permission import IsProfileOrReadOnly, IsAuthenticatedOrReadOnly
 
 
 class UserApiView(APIView):
     permission_classes = (
-        IsAuthenticated,
         IsProfileOrReadOnly,
     )
     service = UserBlogService()
@@ -32,14 +32,14 @@ class UserApiView(APIView):
 
 
 class UserPublicationApiView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = PublicationSerializer
     service = UserBlogService()
 
     def get_queryset(self):
         return self.service.get_publication_from_user_wall(self.kwargs["username"])
 
-    def get(self, request):
+    def get(self, request, username):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         publication_service = PublicationService()
@@ -58,9 +58,20 @@ class UserPublicationApiView(ListAPIView):
 
 class UserStatisticApiView(ListAPIView):
     permission_classes = (IsAuthenticated,)
+    service = UserBlogService()
 
     def get(self, request, username):
+        user = self.service.get_user_by_username(username)
+        subscriptions = user.user_subscriptions.all()
+        friends = user.friends.all()
+        publications = Publication.objects.filter(wall_user=user)
+        subscribers  = Subscription.objects.filter(subscription_user=user)
         return Response(
-            {"subscribers": 0, "friends": 0, "subscriptions": 0},
+            {
+                "subscriptions": len(subscriptions),
+                "subscribers": len(subscribers),
+                "friends": len(friends),
+                "publications": len(publications)
+            },
             status=status.HTTP_200_OK,
         )
