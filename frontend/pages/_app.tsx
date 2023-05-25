@@ -1,13 +1,13 @@
 import type { AppProps } from 'next/app'
 import { Normalize } from 'styled-normalize';
 import { ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
 
 import GlobalStyle from '../styles/globalStyle.styled';
-import { AuthProvider } from '../providers/AuthProviders';
 import { NavigationProvider } from '../providers/NavigationProviders';
 import { wrapper } from '../redux/store';
 import theme from '../styles/theme';
-import { Provider } from 'react-redux';
+import { ViewerContextProvider } from '@entities/viewer';
 
 
 function MyApp({ Component, ...rest  }: AppProps) {
@@ -16,7 +16,7 @@ function MyApp({ Component, ...rest  }: AppProps) {
 
   return (
     <Provider store={store}>
-      <AuthProvider>
+      <ViewerContextProvider>
         <ThemeProvider theme={theme} >
           <NavigationProvider>
             <Normalize />
@@ -24,7 +24,7 @@ function MyApp({ Component, ...rest  }: AppProps) {
             <Component {...pageProps} />
           </NavigationProvider>
         </ThemeProvider>
-      </AuthProvider>
+      </ViewerContextProvider>
     </Provider>
   )
 }

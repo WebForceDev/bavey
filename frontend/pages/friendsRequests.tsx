@@ -1,76 +1,62 @@
 import type { NextPage } from 'next'
-import { ThemeContext } from 'styled-components';
-import { useContext } from "react";
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+
+import { Wrapper, TwoColumnGrid, Margin } from '@shared/ui';
+import { withAuth } from '@entities/viewer';
+import { FriendRequestInside, FriendRequestOutside, useFriendRequestsQuery } from '@entities/friendRequest';
+import { AcceptRequest, RejectRequest, UnsubscribeFromUser } from '@features/relationsButton';
+import { Header } from '@widgets/header';
+import { RelationsNavigationSideBar } from '@widgets/navigationsSideBars';
 
 
-import FriendRequestInside from '../components/FriendRequestInside/FriendRequestInside';
-import NavigationLink from '../components/NavigationLink/NavigationLink';
-import TwoColumnLayout from '../components/TwoColumnLayout/TwoColumnLayout';
-import { useNavigation } from '../providers/NavigationProviders';
-import { useFriendRequestsQuery } from '../redux/api/friendrequestApi';
-import Margin from '../styles/components/Margin';
-import NavigationSideBar from '../components/NavigationSideBar/NavigationSideBar';
+const FriendRequestsPage: NextPage = () => {
+  const router = useRouter();
 
-import FriendsIcon from '../public/friends.svg';
-import FriendRequestIcon from '../public/friendRequest.svg';
-import InsideIcon from '../public/inside.svg';
-import OutSideIcon from '../public/outside.svg';
-
-
-const FriendsPage: NextPage = () => {
-  const theme = useContext(ThemeContext);
   const { data, isLoading } = useFriendRequestsQuery();
-  const navigationContext = useNavigation();
-  navigationContext?.setActivePage('Friends')
-  
-  let inside: any[] = [];
-  let outside: any[] = [];
+  let inside = [];
+  let outside = [];
 
-  if (data)  {
-    inside = data.inside.map((req) => (
-       <FriendRequestInside user={req.recipient} message={req.message} key={req.sender.slug} outside={true} />
-    ));
-    outside = data.outside.map((req) => (
-      <FriendRequestInside user={req.sender} message={req.message} key={req.sender.slug} outside={false} />
-    ));
+  if (data) {
+    outside = data.outside;
+    inside = data.inside;
   }
 
   return (
-    <TwoColumnLayout>
-        <div>
-        {isLoading ? 'Loading' : 
-          <>
-            <div id="inside">
-              { inside }
+    <>
+      <Header />
+      <Margin mt={100}>
+        <Wrapper>
+          <TwoColumnGrid firstColumnSize='70%' secondColumnSize='30%'>
+            <div>
+            <h1 name='outside'>Outside</h1>
+            {outside.map((friendRequest) => (
+              <Margin mb={30} key={friendRequest.recipient.username}>
+                  <FriendRequestOutside
+                    unsubscribeButtonSlot={<UnsubscribeFromUser username={friendRequest.recipient.username} />}
+                    friendRequest={friendRequest}
+                  />
+              </Margin>
+            ))}
+            <h1 name='inside'>Inside</h1>
+            {inside.map((friendRequest) => (
+              <Margin mb={30} key={friendRequest.recipient.username}>
+                  <FriendRequestInside
+                    friendRequest={friendRequest}
+                    acceptButtonSlot={<AcceptRequest frindRequestPK={friendRequest.pk} />}
+                    rejectButtonSlot={<RejectRequest frindRequestPK={friendRequest.pk} />}
+                  />
+              </Margin>
+            ))}
             </div>
-            <div id="outside">
-              { outside }
-            </div>
-          </>
-        }
-        {
-          inside.length == 0 && outside.length == 0 && !isLoading &&
-          <h2>No friend requests</h2>
-        }
-        </div>
-
-        <NavigationSideBar>
-          <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Friends' href='/friends' icon={<FriendsIcon stroke={theme.color.white} />} />
-          </Margin>
-          <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='FriendsRequests' href='/friendsRequests' icon={<FriendRequestIcon stroke={theme.color.white} />} />
-          </Margin>
-          <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Inside' href='#inside' icon={<InsideIcon fill={theme.color.white} />} />
-          </Margin>
-          <Margin mg='20px 0 15px 0'>
-            <NavigationLink text='Outside' href='#outside' icon={<OutSideIcon fill={theme.color.white} />} />
-          </Margin>
-        </NavigationSideBar>
-
-    </TwoColumnLayout>
+            <RelationsNavigationSideBar />
+          </TwoColumnGrid>
+        </Wrapper>
+      </Margin>
+    </>
   )
-}
+};
 
-export default FriendsPage;
+export default dynamic(() => Promise.resolve(withAuth(FriendRequestsPage)), {
+  ssr: false
+});
