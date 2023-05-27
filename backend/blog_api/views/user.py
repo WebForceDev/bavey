@@ -48,8 +48,10 @@ class UserPublicationApiView(ListAPIView):
 
     def post(self, request, username):
         wall_user = self.service.get_user_by_username(username)
+        print(request.FILES)
+        
         publication = self.service.create_publication_on_user_wall(
-            request.data.get("title"), request.user, wall_user
+            request.data.get("title"), request.user, wall_user, request.FILES
         )
         return Response(
             PublicationSerializer(publication).data, status=status.HTTP_201_CREATED

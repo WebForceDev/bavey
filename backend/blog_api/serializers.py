@@ -21,7 +21,7 @@ class PublicationSerializer(serializers.ModelSerializer):
         model = Publication
         fields = [
             'title',
-            'slug',
+            'slug', 
             'wall_type',
             'wall_user',
             'wall_community',

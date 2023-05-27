@@ -3,21 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 import ButtonStyled from "../../styles/components/Button";
+import { imageLoader } from "@shared/lib";
 import { useAcceptMutation, useRejectMutation, useUnsubscribeMutation } from "../../redux/api/friendrequestApi";
 import { FriendReuestInside } from "./style";
 import { IUser } from "../../types/user";
 
-import photo from '../../public/Avatar.png';
 import Margin from "../../styles/components/Margin";
 
 
 interface IFriendRequestInsideProps {
     user: IUser,
     message: string,
-    outside: boolean
+    outside: boolean,
+    avatar: string
 }
 
-const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, message, outside }) => {
+const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, message, outside, avatar }) => {
     const [accept, acceptRresult] = useAcceptMutation();
     const [reject, rejectRresult] = useRejectMutation();
     const [unsubscr, unsubscrRresult] = useUnsubscribeMutation();
@@ -25,7 +26,8 @@ const FriendRequestInside: React.FC<IFriendRequestInsideProps> = ({ user, messag
     return (
         <FriendReuestInside>
             <Image
-                src={photo}
+                loader={imageLoader}
+                src={avatar}
                 alt={user.slug}
                 width={90}
                 height={90}

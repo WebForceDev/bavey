@@ -1,7 +1,7 @@
 export {
     useAcceptFriendRequestMutation,
     useCreateFriendRequestMutation,
-    friendRequestApi,
+    friendRequestButtonApi,
     useRejectFriendRequestMutation,
     useRemoveFriendMutation,
     useUnsubscribeFromUserMutation,

@@ -6,7 +6,7 @@ interface ICreateFriendRequestArgs {
     message: string
 }
 
-export const friendRequestApi = baseApi.injectEndpoints({
+export const friendRequestButtonApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
 
     acceptFriendRequest: builder.mutation<any, number>({
@@ -69,4 +69,4 @@ export const {
   useCreateFriendRequestMutation,
   useUnsubscribeFromUserMutation,
   useRemoveFriendMutation
-} = friendRequestApi;
+} = friendRequestButtonApi;

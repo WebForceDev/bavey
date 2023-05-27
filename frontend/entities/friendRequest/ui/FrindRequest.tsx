@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import ButtonStyled from "../../styles/components/Button";
 // import { useAcceptMutation, useRejectMutation, useUnsubscribeMutation } from "../../redux/api/friendrequestApi";
 import { FriendReuestInside } from "./style";
 import { IUser } from "../../types/user";

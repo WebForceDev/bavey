@@ -34,3 +34,7 @@ export const PublicationButton = styled.input.attrs({type: 'submit'})`
     border-radius: 15px;
     cursor: pointer;
 `
+
+export const AddImage = styled.input.attrs({type: 'file'})`
+
+`

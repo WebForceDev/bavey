@@ -27,10 +27,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
+ALLOWED_HOSTS = ['backend', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = [os.environ['CORS_ALLOWED_ORIGINS']]
 
-ALLOWED_HOSTS = [os.environ['HOST']]
 
 
 # Application definition

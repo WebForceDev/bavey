@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 
-from blog_api.models import User, Publication, WallTypeChoices
+from blog_api.models import User, Publication, WallTypeChoices, PublicationMedia, MediaTypeChoices
 from blog_api.serializers import UserSerializer
 
 
@@ -39,7 +39,7 @@ class UserBlogService:
         return publications
 
     def create_publication_on_user_wall(
-        self, title: str, owner: User, user_wall: User
+        self, title: str, owner: User, user_wall: User, images
     ) -> Publication:
         """
         This method create publication on user wall.
@@ -49,10 +49,20 @@ class UserBlogService:
         :param user: the user on whose wall create publication.
         :return: return created publication.
         """
+        print('create publication')
         publicaton = Publication()
         publicaton.title = title
         publicaton.wall_type = WallTypeChoices.USER
         publicaton.wall_user = user_wall
         publicaton.owner = owner
         publicaton.save()
+
+        for filename, file in images.items():
+            media_file = PublicationMedia()
+            media_file.type = MediaTypeChoices.IMAGE
+            media_file.image = file
+            media_file.publication = publicaton
+            media_file.save()
+
+
         return publicaton
