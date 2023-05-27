@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
+
+import { SearchInput } from "@features/search/ui/styled";
 
 import SearchIcon from '@public/searchIcon.svg';
 
@@ -26,8 +27,8 @@ export const Search = () => {
 
     return (
         <form onSubmit={onSubmit}>
-            {!isActive && <Image width={50} height={50} src={<SearchIcon />} onClick={() => setIsActive(true)} alt='search' />}
-            {isActive && <input value={value} onBlur={onBlur} onChange={onChangeHeandler} />}
+            {!isActive && <SearchIcon onClick={() => setIsActive(true)} alt='search' />}
+            {isActive && <SearchInput value={value} onBlur={onBlur} onChange={onChangeHeandler} />}
         </form>
     );
 }
