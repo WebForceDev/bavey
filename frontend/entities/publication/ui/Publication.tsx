@@ -1,6 +1,7 @@
 import React from "react";
 
 import { PublicationStyle, PublicationWrapper, PublicationText } from "./styled";
+import { MediaImageSlider } from "@entities/publication/ui/MediaImage";
 import { IPublication } from '../model/types';
 import { Flex } from "@shared/ui";
 import { Margin } from "@shared/ui";
@@ -24,6 +25,7 @@ export const Publication: React.FC<IPublicationProps> = (props) => {
         <PublicationText>
           { props.publication.publication.title }
         </PublicationText>
+        <MediaImageSlider images={props.publication.publication_media} />
         <PublicationWrapper>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex justifyContent="flex-start" alignItems="center">
