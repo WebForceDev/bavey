@@ -4,21 +4,18 @@ import { baseApi } from '../../../shared/api';
 interface IcreatePublicationArgs {
     wallSlug: string,
     wallType: string,
-    title: string,
-
+    body: FormData
 }
 
 export const publicationCreatorApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
 
     createPublication: builder.mutation<any, IcreatePublicationArgs>({
-        query({ wallType, wallSlug, title }) {
+        query({ wallType, wallSlug, body }) {
           return {
             url: `blog_api/${wallType}/${wallSlug}/publications`,
             method: 'POST',
-            body: {
-                title: title
-            }
+            body: body,
           };
         },
         invalidatesTags: ['Statistic']
