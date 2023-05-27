@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'blog_api',
     'relations_api',
-    'auth_api'
+    'auth_api',
+    'search_api'
 ]
 
 MIDDLEWARE = [
@@ -155,8 +156,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 1,
 }
 
-ELASTICSEARCH_DSL={
+ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': os.environ['ELASTICSEARCH_HOST']
+        'hosts': os.environ['ELASTICSEARCH_HOST'],
+        
     },
 }
