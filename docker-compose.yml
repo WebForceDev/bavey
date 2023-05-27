@@ -16,6 +16,7 @@ services:
       - .env
     depends_on:
       - db
+      - elasticsearch
     networks:
       - bavey-network
   
@@ -42,6 +43,16 @@ services:
     restart: always
     env_file:
       - .env
+    networks:
+      - bavey-network
+    
+  elasticsearch:
+    image: elasticsearch:7.17.10
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
     networks:
       - bavey-network
 

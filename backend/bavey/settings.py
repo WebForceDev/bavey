@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'django_elasticsearch_dsl',
 
     'blog_api',
     'relations_api',
-    'auth_api'
+    'auth_api',
+    'search_api'
 ]
 
 MIDDLEWARE = [
@@ -152,4 +154,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 1,
+}
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': os.environ['ELASTICSEARCH_HOST'],
+        
+    },
 }
