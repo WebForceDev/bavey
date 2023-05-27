@@ -47,14 +47,14 @@ services:
       - bavey-network
     
   elasticsearch:
-    image: elasticsearch:8.7.1
+    image: elasticsearch:7.17.10
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
     ports:
       - 9200:9200
-    volumes:
-      - ./  esdata:/usr/share/elasticsearch/data
+    networks:
+      - bavey-network
 
 networks:
   bavey-network:
