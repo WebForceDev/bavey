@@ -2,13 +2,6 @@ version: '3.1'
 
 services:
 
-  db:
-    image: postgres
-    container_name: db
-    restart: always
-    env_file:
-      - .env
-
   backend:
     build:
       context: backend
@@ -23,7 +16,9 @@ services:
       - .env
     depends_on:
       - db
-
+    networks:
+      - bavey-network
+  
   frontend:
     build:
         context: frontend
@@ -36,3 +31,21 @@ services:
      - 3000:3000
     env_file:
       - .env
+    networks:
+      - bavey-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - bavey-network
+
+networks:
+  bavey-network:
+    driver: bridge
+    external: true

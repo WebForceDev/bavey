@@ -1,20 +1,25 @@
 import { configureStore, AnyAction, combineReducers, Action, ThunkAction } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 
-import { postApi } from './api/postApi';
-import { friendrequestApi } from './api/friendrequestApi';
-import { communityApi } from './api/communityApi';
-
 import { userApi } from '@entities/User';
 import { viewerApi } from '@entities/viewer';
+import { friendRequestButtonApi } from '@features/relationsButton';
+import { relationApi } from '@entities/relation';
+import { friendRequestApi } from '@entities/friendRequest/api/friendRequestApi';
+import { publicationCreatorApi } from '@features/createPublication';
+import { voicesButtonApi } from '@features/SetVoicesButton';
+import { savedPublicationApi } from '@widgets/savedPublicationList'
 
 
 const combinedReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
-  [postApi.reducerPath]: postApi.reducer,
   [viewerApi.reducerPath]: viewerApi.reducer,
-  [friendrequestApi.reducerPath]: friendrequestApi.reducer,
-  [communityApi.reducerPath]: communityApi.reducer,
+  [friendRequestButtonApi.reducerPath]: friendRequestButtonApi.reducer,
+  [relationApi.reducerPath]: relationApi.reducer,
+  [friendRequestApi.reducerPath]: friendRequestApi.reducer,
+  [publicationCreatorApi.reducerPath]: publicationCreatorApi.reducer,
+  [voicesButtonApi.reducerPath]: voicesButtonApi.reducer,
+  [savedPublicationApi.reducerPath]: savedPublicationApi.reducer,
 });
 
 const reducer = (state: ReturnType<typeof combinedReducer>, action: AnyAction) => {
@@ -37,9 +42,12 @@ export const makeStore = () =>
       getDefaultMiddleware({}).concat([
         userApi.middleware,
         viewerApi.middleware,
-        postApi.middleware,
-        friendrequestApi.middleware,
-        communityApi.middleware,
+        friendRequestButtonApi.middleware,
+        relationApi.middleware,
+        friendRequestApi.middleware,
+        publicationCreatorApi.middleware,
+        voicesButtonApi.middleware,
+        savedPublicationApi.middleware,
       ]),
 });
 

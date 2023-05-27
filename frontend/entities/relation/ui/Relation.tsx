@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { RelationStyled, UserName, UserInfo, UserSendMessage } from './styled';
+import { imageLoader } from "@shared/lib";
 import { Button, Margin } from "@shared/ui";
 
 import photo from '@public/Avatar.png';
@@ -10,14 +11,16 @@ import photo from '@public/Avatar.png';
 
 interface IRelation {
     username:string,
-    removeFriendButtonSlot: React.ReactNode
+    removeFriendButtonSlot: React.ReactNode,
+    avatar: string
 }
 
-export const Relation: React.FC<IRelation> = ({ username, removeFriendButtonSlot }) => {
+export const Relation: React.FC<IRelation> = ({ username, removeFriendButtonSlot, avatar }) => {
     return (
         <RelationStyled>
             <Image
-                src={photo}
+                loader={imageLoader}
+                src={avatar}
                 alt={username}
                 width={90}
                 height={90}
