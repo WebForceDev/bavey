@@ -12,4 +12,5 @@ fi
 
 # Start server
 echo "Starting server"
-python manage.py runserver 0.0.0.0:8080
+#python manage.py runserver 0.0.0.0:8080
+daphne -b 0.0.0.0 -p 8080 bavey.asgi:application
