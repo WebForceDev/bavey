@@ -35,6 +35,10 @@ CORS_ALLOWED_ORIGINS = [os.environ['CORS_ALLOWED_ORIGINS']]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'messenger_api',
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +54,7 @@ INSTALLED_APPS = [
     'blog_api',
     'relations_api',
     'auth_api',
-    'search_api'
+    'search_api',
 ]
 
 MIDDLEWARE = [
@@ -158,7 +162,15 @@ REST_FRAMEWORK = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': os.environ['ELASTICSEARCH_HOST'],
-        
+        'hosts': os.environ['ELASTICSEARCH_HOST']
+    },
+}
+ASGI_APPLICATION = "bavey.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
     },
 }

@@ -56,6 +56,14 @@ services:
     networks:
       - bavey-network
 
+  redis:
+    image: redis:7.2-rc2
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - bavey-network
+
 networks:
   bavey-network:
     driver: bridge
