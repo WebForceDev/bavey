@@ -35,6 +35,8 @@ CORS_ALLOWED_ORIGINS = [os.environ['CORS_ALLOWED_ORIGINS']]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'messenger_api',
     'channels',
 
     'django.contrib.admin',
@@ -53,7 +55,6 @@ INSTALLED_APPS = [
     'relations_api',
     'auth_api',
     'search_api',
-    'messenger_api',
 ]
 
 MIDDLEWARE = [

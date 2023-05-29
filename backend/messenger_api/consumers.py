@@ -1,10 +1,19 @@
 import json
 import logging
 
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+
+from .models import ChatMessage
+from .service import ChatService
 
 
 logger = logging.getLogger()
+
+def create_messege(room_name, message, token):
+    service = ChatService()
+    service.add_user_in_chat(room_name, token)
+    service.create_messages(room_name, message, token)
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -16,7 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        logger.error('connect ws')
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -30,6 +38,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        token = text_data_json['token']
+
+        await sync_to_async(create_messege)(self.room_name, message, token)
+
 
         # Send message to room group
         await self.channel_layer.group_send(
